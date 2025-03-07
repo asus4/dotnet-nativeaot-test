@@ -2,10 +2,16 @@
 
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
+    <OutputType>Library</OutputType>
+    <IsAotCompatible>true</IsAotCompatible>
+    <SelfContained>true</SelfContained>
+
     <PublishAot>true</PublishAot>
-    <PublishTrimmed>true</PublishTrimmed>
-    <OptimizationPreference>Size</OptimizationPreference>
-    <NativeLib>Static</NativeLib>
+    <PublishAotUsingRuntimePack>true</PublishAotUsingRuntimePack>
+    <!-- <PublishTrimmed>true</PublishTrimmed> -->
+    <PublishSelfContained>true</PublishSelfContained>
+    <NativeLib>Dynamic</NativeLib>
+    <RuntimeIdentifier>osx-arm64</RuntimeIdentifier>
     <InvariantGlobalization>true</InvariantGlobalization>
   </PropertyGroup>
 

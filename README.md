@@ -5,3 +5,4 @@ Test for multi-platform (Windows, macOS, Android, iOS) native app built with C#.
 ## References
 
 - [dotnet/samples](https://github.com/dotnet/samples/tree/main/core/nativeaot): MIT License
+- [dotnet/runtime - mono/sample](https://github.com/dotnet/runtime/tree/main/src/mono/sample/iOS-NativeAOT): MIT License
