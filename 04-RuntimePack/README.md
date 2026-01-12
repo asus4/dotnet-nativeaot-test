@@ -11,6 +11,11 @@ dotnet publish -r ios-arm64 MyNativeAOTLibrary/MyNativeAOTLibrary.csproj
 dotnet publish -r iossimulator-arm64 MyNativeAOTLibrary/MyNativeAOTLibrary.csproj
 dotnet publish -r iossimulator-x64 MyNativeAOTLibrary/MyNativeAOTLibrary.csproj
 
+dotnet publish -r android-arm64 MyNativeAOTLibrary/MyNativeAOTLibrary.csproj
+dotnet publish -r android-arm MyNativeAOTLibrary/MyNativeAOTLibrary.csproj
+
+dotnet publish -r linux-bionic-arm64 /p:SysDvrTarget=android MyNativeAOTLibrary/MyNativeAOTLibrary.csproj
+dotnet publish -r linux-bionic-arm64 -p:DisableUnsupportedError=true -p:PublishAotUsingRuntimePack=true MyNativeAOTLibrary/MyNativeAOTLibrary.csproj
 
 # List of RIDs
 # https://learn.microsoft.com/en-us/dotnet/core/rid-catalog#known-rids
