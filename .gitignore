@@ -5,6 +5,8 @@
 # Build cache
 xcframework_build/
 *.xcframework
+aar_build/
+*.aar
 
 ## Xcode user data
 xcuserdata/

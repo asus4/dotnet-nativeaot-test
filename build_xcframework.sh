@@ -1,9 +1,9 @@
 #!/bin/bash
 set -e
 
-PROJECT="NativeAotLib.Core/NativeAotLib.Core.csproj"
+PROJECT="NativeAotLib.Apple/NativeAotLib.Apple.csproj"
 FRAMEWORK_NAME="NativeAotLib"
-BASE_PATH="NativeAotLib.Core/bin/Release/net10.0"
+BASE_PATH="NativeAotLib.Apple/bin/Release/net10.0"
 BUNDLE_ID="com.example.$FRAMEWORK_NAME"
 
 # Make Info.plist in the specified path
@@ -42,7 +42,7 @@ create_versioned_framework() {
   
   cp "$binary_path" "$fw_dir/Versions/A/$FRAMEWORK_NAME"
   install_name_tool -id @rpath/$FRAMEWORK_NAME.framework/Versions/A/$FRAMEWORK_NAME \
-    "$fw_dir/Versions/A/$FRAMEWORK_NAME"
+  "$fw_dir/Versions/A/$FRAMEWORK_NAME"
   create_info_plist "$fw_dir/Versions/A/Resources/Info.plist"
 }
 
