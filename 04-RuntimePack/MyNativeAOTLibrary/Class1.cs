@@ -17,8 +17,11 @@ public class Class1
         {
             // UnmanagedCallersOnly methods only accept primitive arguments. The primitive arguments
             // have to be marshalled manually if necessary.
-            string str = Marshal.PtrToStringAnsi(pString);
-
+            var str = Marshal.PtrToStringAnsi(pString);
+            if (string.IsNullOrEmpty(str))
+            {
+                throw new ArgumentNullException(nameof(pString));
+            }
             Console.WriteLine(str);
         }
         catch
@@ -33,17 +36,28 @@ public class Class1
     [UnmanagedCallersOnly(EntryPoint = "aotsample_sumstring")]
     public static IntPtr SumString(IntPtr first, IntPtr second)
     {
-        // Parse strings from the passed pointers 
-        string my1String = Marshal.PtrToStringAnsi(first);
-        string my2String = Marshal.PtrToStringAnsi(second);
+        try
+        {
+            // Parse strings from the passed pointers 
+            var my1String = Marshal.PtrToStringAnsi(first);
+            var my2String = Marshal.PtrToStringAnsi(second);
+            if (string.IsNullOrEmpty(my1String))
+            {
+                throw new ArgumentNullException(nameof(first));
+            }
+            if (string.IsNullOrEmpty(my2String))
+            {
+                throw new ArgumentNullException(nameof(second));
+            }
 
-        // Concatenate strings 
-        string sum = my1String + my2String;
-
-        // Assign pointer of the concatenated string to sumPointer
-        IntPtr sumPointer = Marshal.StringToHGlobalAnsi(sum);
-
-        // Return pointer
-        return sumPointer;
+            // Concatenate strings 
+            string sum = $"{my1String}{my2String}";
+            IntPtr sumPointer = Marshal.StringToHGlobalAnsi(sum);
+            return sumPointer;
+        }
+        catch
+        {
+            return IntPtr.Zero;
+        }
     }
 }
