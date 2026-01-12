@@ -21,6 +21,7 @@ struct ContentView: View {
             Button("Sum String") {
                 if let cString = aotsample_sumstring("Hello, ", "World!") {
                     sumResult = String(cString: cString)
+                    free(cString)
                 }
             }
 
