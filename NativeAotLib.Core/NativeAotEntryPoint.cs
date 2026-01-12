@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace NativeAotLib;
+namespace NativeAotLib.Core;
 
 public class NativeEntryPoint
 {

@@ -3,8 +3,13 @@
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
     <OutputType>Library</OutputType>
+    <AssemblyName>NativeAotLib</AssemblyName>
     <ImplicitUsings>enable</ImplicitUsings>
 
+    <!-- <EnablePreviewFeatures>true</EnablePreviewFeatures>
+    <AndroidAllowExperimentalRuntime>true</AndroidAllowExperimentalRuntime>
+    <UseMonoRuntime>false</UseMonoRuntime>
+     -->
     <Nullable>enable</Nullable>
     <IsAotCompatible>true</IsAotCompatible>
     <PublishAot>true</PublishAot>

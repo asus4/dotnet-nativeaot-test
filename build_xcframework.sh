@@ -1,9 +1,9 @@
 #!/bin/bash
 set -e
 
-PROJECT="MyNativeAOTLibrary/MyNativeAOTLibrary.csproj"
-FRAMEWORK_NAME="MyNativeAOTLibrary"
-BASE_PATH="MyNativeAOTLibrary/bin/Release/net10.0"
+PROJECT="NativeAotLib.Core/NativeAotLib.Core.csproj"
+FRAMEWORK_NAME="NativeAotLib"
+BASE_PATH="NativeAotLib.Core/bin/Release/net10.0"
 BUNDLE_ID="com.example.$FRAMEWORK_NAME"
 
 # Make Info.plist in the specified path

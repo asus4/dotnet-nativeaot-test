@@ -27,11 +27,11 @@
 		786D1D842F15168900A11DB2 /* Exceptions for "MyNativeAOTApple" folder in "Embed Frameworks" phase from "MyNativeAOTTApple" target */ = {
 			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
 			attributesByRelativePath = {
-				MyNativeAOTLibrary.xcframework = (CodeSignOnCopy, RemoveHeadersOnCopy, );
+				NativeAotLib.xcframework = (CodeSignOnCopy, RemoveHeadersOnCopy, );
 			};
 			buildPhase = 786D1D7E2F15120800A11DB2 /* Embed Frameworks */;
 			membershipExceptions = (
-				MyNativeAOTLibrary.xcframework,
+				NativeAotLib.xcframework,
 			);
 		};
 		786D1D8A2F151D6500A11DB2 /* Exceptions for "MyNativeAOTApple" folder in "Compile Sources" phase from "MyNativeAOTTApple" target */ = {
