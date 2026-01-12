@@ -1,3 +1,7 @@
+# .NET
+[Bb]in/
+[Oo]bj/
+
 # Build cache
 xcframework_build/
 *.xcframework
