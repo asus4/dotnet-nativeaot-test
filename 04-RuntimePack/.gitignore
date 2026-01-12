@@ -1,6 +1,0 @@
-# Build cache
-xcframework_build/
-*.xcframework
-
-## Xcode user data
-xcuserdata/

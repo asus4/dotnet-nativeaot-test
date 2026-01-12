@@ -1,3 +1,6 @@
+# Build cache
+xcframework_build/
+*.xcframework
 
-[Bb]in/
-[Oo]bj/
+## Xcode user data
+xcuserdata/

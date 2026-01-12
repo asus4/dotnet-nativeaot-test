@@ -1,8 +1,19 @@
-# Test for .Net Native AOT
+# Native AOT Library Example
 
-Test for multi-platform (Windows, macOS, Android, iOS) native app built with C#.
+A minimum example of using .Net Native AOT as a native library in iOS, macOS (from Swift), Android (from Kotlin).
 
-## References
+## How to test
 
-- [dotnet/samples](https://github.com/dotnet/samples/tree/main/core/nativeaot): MIT License
-- [dotnet/runtime - mono/sample](https://github.com/dotnet/runtime/tree/main/src/mono/sample/iOS-NativeAOT): MIT License
+```bash
+
+# Build iOS and macOS xcframework
+./build_xcframeworks.sh
+
+
+
+```
+
+## Links
+
+- List of RIDs: <https://learn.microsoft.com/en-us/dotnet/core/rid-catalog#known-rids>
+- Native AOT iOS tutorial: <https://learn.microsoft.com/en-us/dotnet/core/deploying/native-aot/ios-like-platforms/creating-and-consuming-custom-frameworks>
