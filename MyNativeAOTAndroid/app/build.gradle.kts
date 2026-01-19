@@ -1,6 +1,5 @@
 plugins {
   alias(libs.plugins.android.application)
-  alias(libs.plugins.kotlin.android)
   alias(libs.plugins.kotlin.compose)
 }
 
@@ -28,24 +27,14 @@ android {
     sourceCompatibility = JavaVersion.VERSION_23
     targetCompatibility = JavaVersion.VERSION_23
   }
-  kotlin {
-    compilerOptions {
-      jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_23)
-    }
-  }
   buildFeatures {
     compose = true
   }
 }
 
 dependencies {
-  // Native AOT library (built via build_aar.sh)
+  // Native AOT + JNI bridge
   implementation(files("libs/NativeAotLib.aar"))
-  implementation(libs.jna) {
-    artifact {
-      type = "aar"
-    }
-  }
 
   implementation(libs.androidx.core.ktx)
   implementation(libs.androidx.lifecycle.runtime.ktx)
