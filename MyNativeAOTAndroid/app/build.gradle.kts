@@ -41,7 +41,11 @@ android {
 dependencies {
   // Native AOT library (built via build_aar.sh)
   implementation(files("libs/NativeAotLib.aar"))
-  implementation("net.java.dev.jna:jna:5.14.0@aar")
+  implementation(libs.jna) {
+    artifact {
+      type = "aar"
+    }
+  }
 
   implementation(libs.androidx.core.ktx)
   implementation(libs.androidx.lifecycle.runtime.ktx)
