@@ -1,9 +1,9 @@
 #!/bin/bash
 set -e
 
-PROJECT="NativeAotLib.Apple/NativeAotLib.Apple.csproj"
+PROJECT="NativeAotLib/NativeAotLib.csproj"
 FRAMEWORK_NAME="NativeAotLib"
-BASE_PATH="NativeAotLib.Apple/bin/Release/net10.0"
+BASE_PATH="NativeAotLib/bin/Release/net10.0"
 BUNDLE_ID="com.example.$FRAMEWORK_NAME"
 
 # Make Info.plist in the specified path

@@ -11,7 +11,7 @@ struct ContentView: View {
     @State private var sumResult: String = ""
 
     var body: some View {
-        VStack {
+        VStack(spacing: 32) {
             Text("15 + 2 = \(aotsample_add(15, 2))")
 
             Button("Write Line") {

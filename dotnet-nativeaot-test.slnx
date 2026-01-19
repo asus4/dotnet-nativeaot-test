@@ -1,5 +1,3 @@
 <Solution>
-  <Project Path="NativeAotLib.Core/NativeAotLib.Core.csproj" />
-  <Project Path="NativeAotLib.Apple/NativeAotLib.Apple.csproj" />
-  <Project Path="NativeAotLib.Android/NativeAotLib.Android.csproj" />
+  <Project Path="NativeAotLib.Core/NativeAotLib.csproj" />
 </Solution>

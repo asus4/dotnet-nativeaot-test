@@ -1,9 +1,9 @@
 #!/bin/bash
 set -e
 
-PROJECT="NativeAotLib.Android/NativeAotLib.Android.csproj"
+PROJECT="NativeAotLib/NativeAotLib.csproj"
 LIBRARY_NAME="NativeAotLib"
-BASE_PATH="NativeAotLib.Android/bin/Release/net10.0"
+BASE_PATH="NativeAotLib/bin/Release/net10.0"
 PACKAGE_NAME="com.example.nativeaotlib"
 
 # Set your Android NDK path
