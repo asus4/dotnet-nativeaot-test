@@ -53,7 +53,7 @@ static int init_native_lib(JNIEnv *env) {
 }
 
 JNIEXPORT jint JNICALL
-Java_com_example_mynativeaotandroid_NativeAotBridge_nativeAdd(
+Java_com_example_mynativeaotandroid_NativeAot_nativeAdd(
     JNIEnv *env, jobject thiz, jint a, jint b) {
     if (init_native_lib(env) != 0) {
         return -1;
@@ -62,7 +62,7 @@ Java_com_example_mynativeaotandroid_NativeAotBridge_nativeAdd(
 }
 
 JNIEXPORT jint JNICALL
-Java_com_example_mynativeaotandroid_NativeAotBridge_nativeWriteLine(
+Java_com_example_mynativeaotandroid_NativeAot_nativeWriteLine(
     JNIEnv *env, jobject thiz, jstring message) {
     if (init_native_lib(env) != 0) {
         return -1;
@@ -80,7 +80,7 @@ Java_com_example_mynativeaotandroid_NativeAotBridge_nativeWriteLine(
 }
 
 JNIEXPORT jstring JNICALL
-Java_com_example_mynativeaotandroid_NativeAotBridge_nativeSumString(
+Java_com_example_mynativeaotandroid_NativeAot_nativeSumString(
     JNIEnv *env, jobject thiz, jstring str1, jstring str2) {
     if (init_native_lib(env) != 0) {
         return NULL;
