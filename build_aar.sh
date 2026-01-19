@@ -34,21 +34,21 @@ done
 rm -rf aar_build && mkdir -p aar_build
 cd aar_build
 
-# Create AAR structure
-mkdir -p jniLibs
+# Create AAR structure (AAR uses "jni/" not "jniLibs/")
+mkdir -p jni
 
-# Copy .so files to the correct jniLibs directories
+# Copy .so files to the correct jni directories
 for rid in "${RIDS[@]}"; do
   abi=$(get_abi_for_rid "$rid")
-  mkdir -p "jniLibs/$abi"
+  mkdir -p "jni/$abi"
 
-  # Find and copy the .so file
+  # Copy the .so file (Android requires "lib" prefix)
   so_path="../$BASE_PATH/$rid/publish/$LIBRARY_NAME.so"
   if [ -f "$so_path" ]; then
-    cp "$so_path" "jniLibs/$abi/$LIBRARY_NAME.so"
-    echo "✅ Copied $rid → jniLibs/$abi/$LIBRARY_NAME.so"
+    cp "$so_path" "jni/$abi/lib$LIBRARY_NAME.so"
+    echo "[OK] Copied $rid -> jni/$abi/lib$LIBRARY_NAME.so"
   else
-    echo "⚠️  Warning: $so_path not found"
+    echo "[WARN] $so_path not found"
   fi
 done
 
@@ -70,10 +70,14 @@ jar cfm classes.jar temp_classes/MANIFEST.MF -C temp_classes .
 rm -rf temp_classes
 
 # Create AAR (it's just a zip file with specific structure)
-jar cf "$LIBRARY_NAME.aar" AndroidManifest.xml classes.jar jniLibs
+jar cf "$LIBRARY_NAME.aar" AndroidManifest.xml classes.jar jni
 
-echo ""
-echo "✅ Created: aar_build/$LIBRARY_NAME.aar"
-echo ""
+echo "[OK] Created: aar_build/$LIBRARY_NAME.aar"
 echo "AAR Contents:"
 jar tf "$LIBRARY_NAME.aar"
+
+# Copy AAR to Android project
+ANDROID_LIBS_DIR="../MyNativeAOTAndroid/app/libs"
+mkdir -p "$ANDROID_LIBS_DIR"
+cp "$LIBRARY_NAME.aar" "$ANDROID_LIBS_DIR/"
+echo "[OK] Copied to: MyNativeAOTAndroid/app/libs/$LIBRARY_NAME.aar"
