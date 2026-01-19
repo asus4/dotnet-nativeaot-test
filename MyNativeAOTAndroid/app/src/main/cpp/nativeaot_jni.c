@@ -30,7 +30,9 @@ static void* lib_handle = NULL;
 } while(0)
 
 // Initialize by loading NativeAotLib and resolving symbols
-static int ensure_initialized(void) {
+JNIEXPORT jint JNICALL
+Java_com_example_mynativeaotandroid_NativeAot_nativeInit(
+    JNIEnv *env, jclass thiz) {
     if (lib_handle != NULL) return 0;
 
     lib_handle = dlopen(NATIVE_LIB_NAME, RTLD_NOW | RTLD_GLOBAL);
@@ -46,27 +48,14 @@ static int ensure_initialized(void) {
     return 0;
 }
 
-// Public-facing initializer used by JNI entrypoints
-static int init_native_lib(JNIEnv *env) {
-    (void)env; // env reserved for future use (e.g., throwing Java exceptions)
-    return ensure_initialized();
-}
-
 JNIEXPORT jint JNICALL
-Java_com_example_mynativeaotandroid_NativeAot_nativeAdd(
-    JNIEnv *env, jobject thiz, jint a, jint b) {
-    if (init_native_lib(env) != 0) {
-        return -1;
-    }
+Java_com_example_mynativeaotandroid_NativeAot_nativeAdd(jint a, jint b) {
     return fn_add(a, b);
 }
 
 JNIEXPORT jint JNICALL
 Java_com_example_mynativeaotandroid_NativeAot_nativeWriteLine(
     JNIEnv *env, jobject thiz, jstring message) {
-    if (init_native_lib(env) != 0) {
-        return -1;
-    }
 
     const char *nativeMessage = (*env)->GetStringUTFChars(env, message, NULL);
     if (nativeMessage == NULL) {
@@ -82,9 +71,6 @@ Java_com_example_mynativeaotandroid_NativeAot_nativeWriteLine(
 JNIEXPORT jstring JNICALL
 Java_com_example_mynativeaotandroid_NativeAot_nativeSumString(
     JNIEnv *env, jobject thiz, jstring str1, jstring str2) {
-    if (init_native_lib(env) != 0) {
-        return NULL;
-    }
 
     const char *nativeStr1 = (*env)->GetStringUTFChars(env, str1, NULL);
     if (nativeStr1 == NULL) {
@@ -108,7 +94,7 @@ Java_com_example_mynativeaotandroid_NativeAot_nativeSumString(
 
     jstring jResult = (*env)->NewStringUTF(env, result);
 
-    // Free memory allocated by NativeAOT (Marshal.StringToHGlobalAnsi)
+    // Free memory
     free(result);
 
     return jResult;
