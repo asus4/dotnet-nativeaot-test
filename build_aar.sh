@@ -5,6 +5,7 @@ PROJECT="NativeAotLib/NativeAotLib.csproj"
 LIBRARY_NAME="NativeAotLib"
 BASE_PATH="NativeAotLib/bin/Release/net10.0"
 PACKAGE_NAME="com.example.nativeaotlib"
+JNI_SOURCE_DIR="MyNativeAOTAndroid/app/src/main/cpp"
 
 # Set your Android NDK path
 export ANDROID_NDK_ROOT="$HOME/Library/Android/sdk/ndk/29.0.14206865"
@@ -17,6 +18,17 @@ get_abi_for_rid() {
     "android-arm") echo "armeabi-v7a" ;;
     "android-x64") echo "x86_64" ;;
     "android-x86") echo "x86" ;;
+    *) echo "unknown" ;;
+  esac
+}
+
+# Function to get NDK target for architecture
+get_ndk_target() {
+  case "$1" in
+    "arm64-v8a") echo "aarch64-linux-android" ;;
+    "armeabi-v7a") echo "armv7a-linux-androideabi" ;;
+    "x86_64") echo "x86_64-linux-android" ;;
+    "x86") echo "i686-linux-android" ;;
     *) echo "unknown" ;;
   esac
 }
@@ -37,19 +49,42 @@ cd aar_build
 # Create AAR structure (AAR uses "jni/" not "jniLibs/")
 mkdir -p jni
 
-# Copy .so files to the correct jni directories
+# Build JNI wrapper and copy .so files for each architecture
+MIN_SDK_VERSION=29
+
 for rid in "${RIDS[@]}"; do
   abi=$(get_abi_for_rid "$rid")
+  ndk_target=$(get_ndk_target "$abi")
   mkdir -p "jni/$abi"
 
-  # Copy the .so file (Android requires "lib" prefix)
+  # Copy the NativeAOT .so file
   so_path="../$BASE_PATH/$rid/publish/$LIBRARY_NAME.so"
   if [ -f "$so_path" ]; then
     cp "$so_path" "jni/$abi/lib$LIBRARY_NAME.so"
     echo "[OK] Copied $rid -> jni/$abi/lib$LIBRARY_NAME.so"
   else
     echo "[WARN] $so_path not found"
+    continue
   fi
+
+  # Build JNI wrapper for this architecture
+  echo "Building JNI wrapper for $abi..."
+
+  # Create a temporary build directory for this architecture
+  mkdir -p "jni_build/$abi"
+
+  # Compile the JNI wrapper using NDK directly
+  # The JNI wrapper uses dlopen/dlsym to load NativeAotLib at runtime,
+  # avoiding Android's linker namespace issues with DT_NEEDED dependencies.
+  CC="${ndk_target}${MIN_SDK_VERSION}-clang"
+
+  $CC -shared -fPIC \
+    -I"$ANDROID_NDK_ROOT/toolchains/llvm/prebuilt/darwin-x86_64/sysroot/usr/include" \
+    -o "jni/$abi/libnativeaot_jni.so" \
+    "../$JNI_SOURCE_DIR/nativeaot_jni.c" \
+    -llog -ldl
+
+  echo "[OK] Built JNI wrapper for $abi"
 done
 
 # Create AndroidManifest.xml
