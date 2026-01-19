@@ -1,12 +1,14 @@
 package com.example.mynativeaotandroid
 
 import android.util.Log
+import dalvik.annotation.optimization.CriticalNative
 
 
 object NativeAot {
     init {
         try {
-            System.loadLibrary(LIB_NAME)
+            System.loadLibrary("NativeAotLib")
+            System.loadLibrary("nativeaot_jni")
             val result = nativeInit()
             if (result!=0){
               throw RuntimeException("Native library initialization failed")
@@ -19,13 +21,12 @@ object NativeAot {
     }
 
     private const val TAG = "NativeAot"
-    private const val LIB_NAME = "nativeaot_jni"
 
     private external fun nativeInit(): Int
 
     // JNI native method declarations
     @JvmStatic
-    @dalvik.annotation.optimization.CriticalNative
+    @CriticalNative
     private external fun nativeAdd(a: Int, b: Int): Int
     private external fun nativeWriteLine(message: String): Int
     private external fun nativeSumString(str1: String, str2: String): String?
