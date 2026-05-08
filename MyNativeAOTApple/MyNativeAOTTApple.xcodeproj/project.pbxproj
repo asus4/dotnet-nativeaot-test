@@ -34,20 +34,12 @@
 				NativeAotLib.xcframework,
 			);
 		};
-		786D1D8A2F151D6500A11DB2 /* Exceptions for "MyNativeAOTApple" folder in "Compile Sources" phase from "MyNativeAOTTApple" target */ = {
-			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
-			buildPhase = 786D1D662F15102300A11DB2 /* Sources */;
-			membershipExceptions = (
-				aot_nativemethods.h,
-			);
-		};
 /* End PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		786D1D6C2F15102300A11DB2 /* MyNativeAOTApple */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				786D1D8A2F151D6500A11DB2 /* Exceptions for "MyNativeAOTApple" folder in "Compile Sources" phase from "MyNativeAOTTApple" target */,
 				786D1D842F15168900A11DB2 /* Exceptions for "MyNativeAOTApple" folder in "Embed Frameworks" phase from "MyNativeAOTTApple" target */,
 			);
 			path = MyNativeAOTApple;
@@ -292,6 +284,7 @@
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/../include";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -337,6 +330,7 @@
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/../include";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;

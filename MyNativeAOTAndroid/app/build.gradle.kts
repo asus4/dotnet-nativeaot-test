@@ -10,12 +10,16 @@ android {
 
   defaultConfig {
     applicationId = "com.example.mynativeaotandroid"
-    minSdk = 29
+    minSdk = 34 // @CriticalNative is public SDK from API 34
     targetSdk = 36
     versionCode = 1
     versionName = "1.0"
 
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+    ndk {
+      abiFilters += listOf("arm64-v8a", "x86_64")
+    }
   }
 
   buildTypes {
@@ -36,17 +40,14 @@ android {
   buildFeatures {
     compose = true
   }
+  externalNativeBuild {
+    cmake {
+      path = file("src/main/cpp/CMakeLists.txt")
+    }
+  }
 }
 
 dependencies {
-  // Native AOT library (built via build_aar.sh)
-  implementation(files("libs/NativeAotLib.aar"))
-  implementation(libs.jna) {
-    artifact {
-      type = "aar"
-    }
-  }
-
   implementation(libs.androidx.core.ktx)
   implementation(libs.androidx.lifecycle.runtime.ktx)
   implementation(libs.androidx.activity.compose)
