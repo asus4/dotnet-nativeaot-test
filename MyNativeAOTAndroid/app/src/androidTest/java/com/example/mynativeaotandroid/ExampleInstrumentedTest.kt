@@ -21,4 +21,11 @@ class ExampleInstrumentedTest {
     val appContext = InstrumentationRegistry.getInstrumentation().targetContext
     assertEquals("com.example.mynativeaotandroid", appContext.packageName)
   }
+
+  @Test
+  fun nativeAotBridgeCallsExports() {
+    assertEquals(17, NativeAot.add(15, 2))
+    assertTrue(NativeAot.writeLine("Hello from instrumentation!"))
+    assertEquals("Hello, World!", NativeAot.sumString("Hello, ", "World!"))
+  }
 }
