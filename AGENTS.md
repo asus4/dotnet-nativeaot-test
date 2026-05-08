@@ -8,16 +8,16 @@ Work log (in Japanese): <https://zenn.dev/asus4/scraps/690d551fc93a85>
 
 - `NativeAotLib/` — Shared net10.0 C# library exposing a C ABI via `UnmanagedCallersOnly`.
 - `include/aot_nativemethods.h` — Canonical C declarations for the AOT exports. Imported by both the Apple bridging header and the Android JNI shim.
-- `MyNativeAOTApple/` — Xcode project. Consumes the `NativeAotLib.xcframework` produced by `build_xcframework.sh` through a bridging header.
+- `MyNativeAOTApple/` — Xcode project. Consumes the `NativeAotLib.xcframework` produced by `build_apple.sh` through a bridging header.
 - `MyNativeAOTAndroid/` — Android Studio project. Consumes the prebuilt `.so` from `app/src/main/jniLibs/<abi>/` and a thin JNI shim built by Gradle's CMake (`app/src/main/cpp/`). Kotlin calls into the native code via direct JNI with `@CriticalNative` for primitive methods (no JNA / reflection).
-- `build_xcframework.sh` — Runs `dotnet publish` for each osx / ios / iossimulator RID, then assembles the xcframework with `lipo` and `xcodebuild -create-xcframework`.
+- `build_apple.sh` — Runs `dotnet publish` for each osx / ios / iossimulator RID, then assembles the xcframework with `lipo` and `xcodebuild -create-xcframework`.
 - `build_android.sh` — Publishes a `.so` for each Android ABI using the NDK toolchain and copies them into `MyNativeAOTAndroid/app/src/main/jniLibs/<abi>/`.
 
 ## Build
 
 ```bash
-./build_xcframework.sh   # → MyNativeAOTApple/MyNativeAOTApple/NativeAotLib.xcframework
-./build_android.sh       # → MyNativeAOTAndroid/app/src/main/jniLibs/{arm64-v8a,x86_64}/libNativeAotLib.so
+./build_apple.sh     # → MyNativeAOTApple/MyNativeAOTApple/NativeAotLib.xcframework
+./build_android.sh   # → MyNativeAOTAndroid/app/src/main/jniLibs/{arm64-v8a,x86_64}/libNativeAotLib.so
 ```
 
 Then open the corresponding project in Xcode / Android Studio and run the app.

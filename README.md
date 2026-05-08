@@ -1,17 +1,17 @@
 # Native AOT Library Example
 
-A minimum example of using .Net Native AOT as a native library in iOS, macOS (from Swift), Android (from Kotlin).
+A minimal example of using .NET Native AOT as a native library on iOS / macOS and Android.
 
 ## How to test
 
 ```bash
-# Build iOS and macOS xcframework
-./build_xcframeworks.sh
-# Then open MyNativeAOTApple/MyNativeAOTApple.xcodeproj with Xcode to test macOS/iOS app
+# Apple (macOS / iOS / iOS simulator → xcframework)
+./build_apple.sh
+# Then open MyNativeAOTApple/MyNativeAOTApple.xcodeproj in Xcode and run.
 
-# Build Android AAR
-./build_aar.sh
-# Then open MyNativeAOTAndroid with Android Studio to test Android app
+# Android (arm64-v8a + x86_64 → jniLibs)
+./build_android.sh
+# Then open MyNativeAOTAndroid in Android Studio and run.
 ```
 
 ## Links
