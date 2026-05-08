@@ -3,16 +3,11 @@ package com.example.mynativeaotandroid
 import android.util.Log
 import dalvik.annotation.optimization.CriticalNative
 
-
 object NativeAot {
     init {
         try {
             System.loadLibrary("NativeAotLib")
             System.loadLibrary("nativeaot_jni")
-            val result = nativeInit()
-            if (result!=0){
-              throw RuntimeException("Native library initialization failed")
-            }
             Log.d(TAG, "Native library loaded successfully")
         } catch (e: UnsatisfiedLinkError) {
             Log.e(TAG, "Failed to load native library", e)
@@ -22,9 +17,6 @@ object NativeAot {
 
     private const val TAG = "NativeAot"
 
-    private external fun nativeInit(): Int
-
-    // JNI native method declarations
     @JvmStatic
     @CriticalNative
     private external fun nativeAdd(a: Int, b: Int): Int

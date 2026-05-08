@@ -6,6 +6,7 @@ LIBRARY_NAME="NativeAotLib"
 BASE_PATH="NativeAotLib/bin/Release/net10.0"
 PACKAGE_NAME="com.example.nativeaotlib"
 JNI_SOURCE_DIR="MyNativeAOTAndroid/app/src/main/cpp"
+NATIVEAOT_INCLUDE_DIR="NativeAotLib/include"
 
 # Set your Android NDK path
 export ANDROID_NDK_ROOT="$HOME/Library/Android/sdk/ndk/29.0.14206865"
@@ -50,7 +51,7 @@ cd aar_build
 mkdir -p jni
 
 # Build JNI wrapper and copy .so files for each architecture
-MIN_SDK_VERSION=29
+MIN_SDK_VERSION=34
 
 for rid in "${RIDS[@]}"; do
   abi=$(get_abi_for_rid "$rid")
@@ -73,12 +74,11 @@ for rid in "${RIDS[@]}"; do
   # Create a temporary build directory for this architecture
   mkdir -p "jni_build/$abi"
 
-  # Compile the JNI wrapper using NDK directly
-  # The JNI wrapper uses dlopen/dlsym to load NativeAotLib at runtime,
-  # avoiding Android's linker namespace issues with DT_NEEDED dependencies.
+  # Compile the JNI wrapper using NDK directly.
   CC="${ndk_target}${MIN_SDK_VERSION}-clang"
 
   $CC -shared -fPIC \
+    -I"../$NATIVEAOT_INCLUDE_DIR" \
     -I"$ANDROID_NDK_ROOT/toolchains/llvm/prebuilt/darwin-x86_64/sysroot/usr/include" \
     -o "jni/$abi/libnativeaot_jni.so" \
     "../$JNI_SOURCE_DIR/nativeaot_jni.c" \
@@ -94,7 +94,7 @@ cat > AndroidManifest.xml << EOF
     package="$PACKAGE_NAME"
     android:versionCode="1"
     android:versionName="1.0">
-    <uses-sdk android:minSdkVersion="21" />
+    <uses-sdk android:minSdkVersion="$MIN_SDK_VERSION" />
 </manifest>
 EOF
 

@@ -3,49 +3,42 @@
 #include <stdlib.h>
 #include <android/log.h>
 
+#include "aot_nativemethods.h"
+
 #define LOG_TAG "NativeAotJNI"
 #define LOGE(...) __android_log_print(ANDROID_LOG_ERROR, LOG_TAG, __VA_ARGS__)
 
-// NativeAOT library name
-#define NATIVE_LIB_NAME "libNativeAotLib.so"
+static void *native_aot_lib;
+static __typeof__(&aotsample_add) fn_add;
+static __typeof__(&aotsample_write_line) fn_write_line;
+static __typeof__(&aotsample_sumstring) fn_sumstring;
 
-// Function pointer types for NativeAOT exports
-typedef int (*add_fn)(int, int);
-typedef int (*write_line_fn)(const char*);
-typedef char* (*sumstring_fn)(const char*, const char*);
+static int resolve_native_aot_exports(void) {
+    if (native_aot_lib != NULL) {
+        return 0;
+    }
 
-// Function pointers (lazy initialized)
-static add_fn fn_add = NULL;
-static write_line_fn fn_write_line = NULL;
-static sumstring_fn fn_sumstring = NULL;
-static void* lib_handle = NULL;
-
-// Helper macro for loading symbols
-#define LOAD_SYMBOL(var, type, name) do { \
-    var = (type)dlsym(lib_handle, name); \
-    if (var == NULL) { \
-        LOGE("Symbol not found: %s - %s", name, dlerror()); \
-        return -1; \
-    } \
-} while(0)
-
-// Initialize by loading NativeAotLib and resolving symbols
-JNIEXPORT jint JNICALL
-Java_com_example_mynativeaotandroid_NativeAot_nativeInit(
-    JNIEnv *env, jclass thiz) {
-    if (lib_handle != NULL) return 0;
-
-    lib_handle = dlopen(NATIVE_LIB_NAME, RTLD_NOW | RTLD_GLOBAL);
-    if (lib_handle == NULL) {
-        LOGE("Failed to load %s: %s", NATIVE_LIB_NAME, dlerror());
+    native_aot_lib = dlopen("libNativeAotLib.so", RTLD_NOW);
+    if (native_aot_lib == NULL) {
+        LOGE("Failed to load libNativeAotLib.so: %s", dlerror());
         return -1;
     }
 
-    LOAD_SYMBOL(fn_add, add_fn, "aotsample_add");
-    LOAD_SYMBOL(fn_write_line, write_line_fn, "aotsample_write_line");
-    LOAD_SYMBOL(fn_sumstring, sumstring_fn, "aotsample_sumstring");
+    fn_add = (__typeof__(fn_add))dlsym(native_aot_lib, "aotsample_add");
+    fn_write_line = (__typeof__(fn_write_line))dlsym(native_aot_lib, "aotsample_write_line");
+    fn_sumstring = (__typeof__(fn_sumstring))dlsym(native_aot_lib, "aotsample_sumstring");
+
+    if (fn_add == NULL || fn_write_line == NULL || fn_sumstring == NULL) {
+        LOGE("Failed to resolve Native AOT exports: %s", dlerror());
+        return -1;
+    }
 
     return 0;
+}
+
+JNIEXPORT jint JNICALL
+JNI_OnLoad(JavaVM *vm, void *reserved) {
+    return resolve_native_aot_exports() == 0 ? JNI_VERSION_1_6 : JNI_ERR;
 }
 
 JNIEXPORT jint JNICALL

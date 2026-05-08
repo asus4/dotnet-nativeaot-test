@@ -5,8 +5,9 @@ project("nativeaot_jni")
 # Add the JNI wrapper library
 add_library(nativeaot_jni SHARED nativeaot_jni.c)
 
-# Link against the NativeAotLib shared library
-# NATIVEAOTLIB_DIR is passed from the build script
+target_include_directories(nativeaot_jni PRIVATE
+    ../../../../../NativeAotLib/include)
+
 target_link_libraries(nativeaot_jni
-    ${NATIVEAOTLIB_DIR}/libNativeAotLib.so
-    log)
+    log
+    dl)
