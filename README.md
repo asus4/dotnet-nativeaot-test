@@ -14,7 +14,7 @@ A minimal example of using .NET Native AOT as a native library on iOS / macOS an
 # Then open MyNativeAOTAndroid in Android Studio and run.
 ```
 
-## Links
+## References
 
 - List of Runtime Identifiers (RIDs): <https://learn.microsoft.com/en-us/dotnet/core/rid-catalog#known-rids>
 - Native AOT iOS tutorial: <https://learn.microsoft.com/en-us/dotnet/core/deploying/native-aot/ios-like-platforms/creating-and-consuming-custom-frameworks>

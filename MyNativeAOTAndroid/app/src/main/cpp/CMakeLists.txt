@@ -8,7 +8,7 @@ project(aot_jni C)
 add_library(aot_jni SHARED aot_jni.c)
 target_include_directories(aot_jni PRIVATE
     ${CMAKE_SOURCE_DIR}/../../../../../include)
-target_link_libraries(aot_jni PRIVATE log dl)
+target_link_libraries(aot_jni PRIVATE log)
 
 # 16 KB ELF page size for Android 15+ devices with 16 KB pages.
 target_link_options(aot_jni PRIVATE "-Wl,-z,max-page-size=16384")

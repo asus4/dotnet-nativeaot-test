@@ -10,28 +10,26 @@
 
 // libNativeAotLib.so has no SONAME, so link-time linking against it bakes the
 // build-host absolute path into DT_NEEDED. We resolve the exports at runtime
-// instead. The library itself is loaded by Kotlin via System.loadLibrary, so
-// dlopen here just bumps its refcount and gives us a handle for dlsym.
-static void* native_aot_lib;
+// instead. Kotlin loads the library via System.loadLibrary before this shim,
+// so dlopen here only bumps the refcount for dlsym.
 static int (*fn_add)(int a, int b);
 static int (*fn_write_line)(const char* pString);
 static char* (*fn_sumstring)(const char* pStr1, const char* pStr2);
 
 static int resolve_native_aot_exports(void) {
-    if (native_aot_lib) return 0;
-
-    native_aot_lib = dlopen("libNativeAotLib.so", RTLD_NOW);
-    if (!native_aot_lib) {
+    void* lib = dlopen("libNativeAotLib.so", RTLD_NOW);
+    if (!lib) {
         LOGE("Failed to load libNativeAotLib.so: %s", dlerror());
         return -1;
     }
 
-    fn_add = (int (*)(int, int))dlsym(native_aot_lib, "aotsample_add");
-    fn_write_line = (int (*)(const char*))dlsym(native_aot_lib, "aotsample_write_line");
-    fn_sumstring = (char* (*)(const char*, const char*))dlsym(native_aot_lib, "aotsample_sumstring");
+    fn_add = (int (*)(int, int))dlsym(lib, "aotsample_add");
+    fn_write_line = (int (*)(const char*))dlsym(lib, "aotsample_write_line");
+    fn_sumstring = (char* (*)(const char*, const char*))dlsym(lib, "aotsample_sumstring");
 
     if (!fn_add || !fn_write_line || !fn_sumstring) {
         LOGE("Failed to resolve Native AOT exports: %s", dlerror());
+        dlclose(lib);
         return -1;
     }
 
