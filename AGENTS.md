@@ -1,6 +1,6 @@
 # dotnet-nativeaot-test
 
-A minimal sample that builds a C# library with .NET Native AOT as a native library for iOS / macOS / Android, then calls it from Swift / Kotlin. The goal is to validate a setup that does not go through Mono.
+A minimal example that builds an .NET code as a native library for iOS / macOS / Android, then calls it from native Swift / Kotlin. The goal is to test a minimal setup for C# -> native interop workflow.
 
 ## Layout
 
@@ -14,19 +14,13 @@ A minimal sample that builds a C# library with .NET Native AOT as a native libra
 
 ## Build
 
-The scripts anchor themselves to the repo root, so they can be run from anywhere.
+```sh
 
-```bash
-./build/build_apple.sh     # → examples/MyNativeAOTApple/MyNativeAOTApple/NativeAotLib.xcframework
-./build/build_android.sh   # → examples/MyNativeAOTAndroid/app/src/main/jniLibs/{arm64-v8a,x86_64}/libNativeAotLib.so
+# Build xcframework for macOS / iOS and move it to the Xcode project
+./build/build_apple.sh
+
+# Build .so for Android and move it to the Android Studio project
+./build/build_android.shlibNativeAotLib.so
 ```
 
 Then open the corresponding project in Xcode / Android Studio and run the app.
-
-## Notes
-
-- Android currently builds only `android-arm64` and `android-x64`. `android-arm` and `android-x86` are excluded because they cannot be cross-compiled on Apple Silicon hosts.
-- `ANDROID_NDK_ROOT` in `build/build_android.sh` is hard-coded to a local path; adjust if your environment differs.
-- Android bridge uses direct JNI: a small `aot_jni.c` shim registers native methods via `RegisterNatives` in `JNI_OnLoad`. The primitive-only `aotsample_add` is bound directly to the AOT export with no wrapper thanks to `@CriticalNative` (calling convention drops `JNIEnv*` / `jclass`). The two string methods use thin wrappers for `GetStringUTFChars` / `NewStringUTF` + `free`. `minSdk = 34` so `dalvik.annotation.optimization.CriticalNative` is part of the public SDK and no annotation stub is needed.
-- The shim resolves AOT exports via `dlopen("libNativeAotLib.so")` + `dlsym` in `JNI_OnLoad`, not link-time linking. The .NET-published `.so` has no `SONAME`, so linking against it bakes the absolute build-host path into `DT_NEEDED` and the loader fails on the device with `dlopen failed: library "/.../libNativeAotLib.so" not found`. `NativeAot.kt` calls `System.loadLibrary("NativeAotLib")` before `aot_jni`, so the subsequent `dlopen` from the shim just bumps the refcount.
-- Both `.so` files ship with 16 KB ELF alignment for Android 15+ devices that use a 16 KB page size. The AOT-built `libNativeAotLib.so` is 16 KB-aligned by default in .NET 10; the CMake-built `libaot_jni.so` shim adds `-Wl,-z,max-page-size=16384` explicitly in `examples/MyNativeAOTAndroid/app/src/main/cpp/CMakeLists.txt`.

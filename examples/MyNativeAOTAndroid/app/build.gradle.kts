@@ -10,7 +10,7 @@ android {
 
   defaultConfig {
     applicationId = "com.example.mynativeaotandroid"
-    minSdk = 34 // @CriticalNative is public SDK from API 34
+    minSdk = 26
     targetSdk = 36
     versionCode = 1
     versionName = "1.0"
