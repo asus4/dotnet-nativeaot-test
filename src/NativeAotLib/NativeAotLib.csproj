@@ -4,8 +4,6 @@
     <TargetFramework>net10.0</TargetFramework>
     <OutputType>Library</OutputType>
     <AssemblyName>NativeAotLib</AssemblyName>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
 
     <IsAotCompatible>true</IsAotCompatible>
     <PublishAot>true</PublishAot>
