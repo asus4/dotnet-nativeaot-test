@@ -3,9 +3,7 @@
 [Oo]bj/
 
 # Build cache
-xcframework_build/
 *.xcframework
-aar_build/
 *.aar
 
 # Native AOT outputs from build_android.sh
