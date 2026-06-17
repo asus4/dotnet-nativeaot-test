@@ -6,12 +6,12 @@ A minimal example of using .NET Native AOT as a native library on iOS / macOS an
 
 ```bash
 # Apple (macOS / iOS / iOS simulator → xcframework)
-./build_apple.sh
-# Then open MyNativeAOTApple/MyNativeAOTApple.xcodeproj in Xcode and run.
+./build/build_apple.sh
+# Then open examples/MyNativeAOTApple/MyNativeAOTTApple.xcodeproj in Xcode and run.
 
 # Android (arm64-v8a + x86_64 → jniLibs)
-./build_android.sh
-# Then open MyNativeAOTAndroid in Android Studio and run.
+./build/build_android.sh
+# Then open examples/MyNativeAOTAndroid in Android Studio and run.
 ```
 
 ## References

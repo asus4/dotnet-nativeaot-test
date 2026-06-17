@@ -9,7 +9,7 @@ aar_build/
 *.aar
 
 # Native AOT outputs from build_android.sh
-MyNativeAOTAndroid/app/src/main/jniLibs/
+examples/MyNativeAOTAndroid/app/src/main/jniLibs/
 
 ## Xcode user data
 xcuserdata/

@@ -1,9 +1,12 @@
 #!/bin/bash
 set -e
 
-PROJECT="NativeAotLib/NativeAotLib.csproj"
+# Run from the repo root regardless of where the script is invoked.
+cd "$(dirname "$0")/.."
+
+PROJECT="src/NativeAotLib/NativeAotLib.csproj"
 FRAMEWORK_NAME="NativeAotLib"
-BASE_PATH="NativeAotLib/bin/Release/net10.0"
+BASE_PATH="src/NativeAotLib/bin/Release/net10.0"
 BUNDLE_ID="com.example.$FRAMEWORK_NAME"
 
 # Make Info.plist in the specified path
@@ -96,5 +99,5 @@ xcodebuild -create-xcframework \
 echo "✅ Created: xcframework_build/$FRAMEWORK_NAME.xcframework"
 
 # Move XCFramework to MyNativeAOTApple project
-rm -rf ../MyNativeAOTApple/MyNativeAOTApple/$FRAMEWORK_NAME.xcframework
-mv $FRAMEWORK_NAME.xcframework ../MyNativeAOTApple/MyNativeAOTApple
+rm -rf ../examples/MyNativeAOTApple/MyNativeAOTApple/$FRAMEWORK_NAME.xcframework
+mv $FRAMEWORK_NAME.xcframework ../examples/MyNativeAOTApple/MyNativeAOTApple

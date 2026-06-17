@@ -1,10 +1,13 @@
 #!/bin/bash
 set -e
 
-PROJECT="NativeAotLib/NativeAotLib.csproj"
+# Run from the repo root regardless of where the script is invoked.
+cd "$(dirname "$0")/.."
+
+PROJECT="src/NativeAotLib/NativeAotLib.csproj"
 LIBRARY_NAME="NativeAotLib"
-BASE_PATH="NativeAotLib/bin/Release/net10.0"
-JNILIBS_DIR="MyNativeAOTAndroid/app/src/main/jniLibs"
+BASE_PATH="src/NativeAotLib/bin/Release/net10.0"
+JNILIBS_DIR="examples/MyNativeAOTAndroid/app/src/main/jniLibs"
 
 # Adjust to your local NDK install
 export ANDROID_NDK_ROOT="$HOME/Library/Android/sdk/ndk/29.0.14206865"

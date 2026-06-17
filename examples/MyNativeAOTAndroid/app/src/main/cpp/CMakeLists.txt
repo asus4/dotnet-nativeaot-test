@@ -7,7 +7,7 @@ project(aot_jni C)
 # loading on the device.
 add_library(aot_jni SHARED aot_jni.c)
 target_include_directories(aot_jni PRIVATE
-    ${CMAKE_SOURCE_DIR}/../../../../../include)
+    ${CMAKE_SOURCE_DIR}/../../../../../../src/NativeAotLib/include)
 target_link_libraries(aot_jni PRIVATE log)
 
 # 16 KB ELF page size for Android 15+ devices with 16 KB pages.
