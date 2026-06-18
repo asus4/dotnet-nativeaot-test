@@ -18,6 +18,9 @@ The goal is to test a minimal workflow for C# -> native interop.
 # Build xcframework for macOS / iOS and move it to the Xcode project
 ./build/build_apple.sh
 
+# Run Apple interop tests on macOS if you have modified the Apple example.
+./build/test_apple.sh
+
 # Build .so for Android and move it to the Android Studio project
 ./build/build_android.sh
 

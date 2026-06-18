@@ -12,16 +12,15 @@ struct ContentView: View {
 
     var body: some View {
         VStack(spacing: 32) {
-            Text("15 + 2 = \(aotsample_add(15, 2))")
+            Text("15 + 2 = \(NativeAot.add(15, 2))")
 
             Button("Write Line") {
-                aotsample_write_line("Hello from Swift!")
+                NativeAot.writeLine("Hello from Swift!")
             }
 
             Button("Sum String") {
-                if let cString = aotsample_sumstring("Hello, ", "World!") {
-                    sumResult = String(cString: cString)
-                    free(cString)
+                if let result = NativeAot.sumString("Hello, ", "World!") {
+                    sumResult = result
                 }
             }
 

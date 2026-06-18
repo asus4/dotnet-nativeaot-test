@@ -6,6 +6,16 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXContainerItemProxy section */
+		AB0000000000000000000006 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 786D1D622F15102300A11DB2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 786D1D692F15102300A11DB2;
+			remoteInfo = AppleNativeAotExample;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXCopyFilesBuildPhase section */
 		786D1D7E2F15120800A11DB2 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
@@ -21,6 +31,7 @@
 
 /* Begin PBXFileReference section */
 		786D1D6A2F15102300A11DB2 /* AppleNativeAotExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AppleNativeAotExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		AB0000000000000000000002 /* AppleNativeAotExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AppleNativeAotExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
@@ -45,6 +56,11 @@
 			path = AppleNativeAotExample;
 			sourceTree = "<group>";
 		};
+		AB0000000000000000000003 /* AppleNativeAotExampleTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = AppleNativeAotExampleTests;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,6 +78,7 @@
 			isa = PBXGroup;
 			children = (
 				786D1D6C2F15102300A11DB2 /* AppleNativeAotExample */,
+				AB0000000000000000000003 /* AppleNativeAotExampleTests */,
 				786D1D6B2F15102300A11DB2 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -70,6 +87,7 @@
 			isa = PBXGroup;
 			children = (
 				786D1D6A2F15102300A11DB2 /* AppleNativeAotExample.app */,
+				AB0000000000000000000002 /* AppleNativeAotExampleTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -100,6 +118,27 @@
 			productReference = 786D1D6A2F15102300A11DB2 /* AppleNativeAotExample.app */;
 			productType = "com.apple.product-type.application";
 		};
+		AB0000000000000000000001 /* AppleNativeAotExampleTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AB0000000000000000000007 /* Build configuration list for PBXNativeTarget "AppleNativeAotExampleTests" */;
+			buildPhases = (
+				AB0000000000000000000004 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				AB0000000000000000000005 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				AB0000000000000000000003 /* AppleNativeAotExampleTests */,
+			);
+			name = AppleNativeAotExampleTests;
+			packageProductDependencies = (
+			);
+			productName = AppleNativeAotExampleTests;
+			productReference = AB0000000000000000000002 /* AppleNativeAotExampleTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -112,6 +151,10 @@
 				TargetAttributes = {
 					786D1D692F15102300A11DB2 = {
 						CreatedOnToolsVersion = 26.2;
+					};
+					AB0000000000000000000001 = {
+						CreatedOnToolsVersion = 26.2;
+						TestTargetID = 786D1D692F15102300A11DB2;
 					};
 				};
 			};
@@ -130,6 +173,7 @@
 			projectRoot = "";
 			targets = (
 				786D1D692F15102300A11DB2 /* AppleNativeAotExample */,
+				AB0000000000000000000001 /* AppleNativeAotExampleTests */,
 			);
 		};
 /* End PBXProject section */
@@ -152,7 +196,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		AB0000000000000000000004 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		AB0000000000000000000005 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 786D1D692F15102300A11DB2 /* AppleNativeAotExample */;
+			targetProxy = AB0000000000000000000006 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		786D1D732F15102400A11DB2 /* Debug */ = {
@@ -363,6 +422,48 @@
 			};
 			name = Release;
 		};
+		AB0000000000000000000008 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 28KUHZR8X3;
+				GENERATE_INFOPLIST_FILE = YES;
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/../../src/NativeAotLib/include";
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.github.asus4.AppleNativeAotExampleTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SUPPORTED_PLATFORMS = macosx;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AppleNativeAotExample.app/Contents/MacOS/AppleNativeAotExample";
+			};
+			name = Debug;
+		};
+		AB0000000000000000000009 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 28KUHZR8X3;
+				GENERATE_INFOPLIST_FILE = YES;
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/../../src/NativeAotLib/include";
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.github.asus4.AppleNativeAotExampleTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SUPPORTED_PLATFORMS = macosx;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AppleNativeAotExample.app/Contents/MacOS/AppleNativeAotExample";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -380,6 +481,15 @@
 			buildConfigurations = (
 				786D1D762F15102400A11DB2 /* Debug */,
 				786D1D772F15102400A11DB2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		AB0000000000000000000007 /* Build configuration list for PBXNativeTarget "AppleNativeAotExampleTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AB0000000000000000000008 /* Debug */,
+				AB0000000000000000000009 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
