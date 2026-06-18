@@ -14,6 +14,8 @@ The goal is to test a minimal workflow for C# -> native interop.
 ## How to Verify
 
 ```sh
+# Verify C# builds
+dotnet build dotnet-nativeaot-test.slnx
 
 # Build xcframework for macOS / iOS and move it to the Xcode project
 ./build/build_apple.sh
