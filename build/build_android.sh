@@ -9,8 +9,11 @@ LIBRARY_NAME="NativeAotLib"
 BASE_PATH="src/NativeAotLib/bin/Release/net10.0"
 JNILIBS_DIR="examples/MyNativeAOTAndroid/app/src/main/jniLibs"
 
-# Adjust to your local NDK install
-export ANDROID_NDK_ROOT="$HOME/Library/Android/sdk/ndk/29.0.14206865"
+# Expects ANDROID_NDK_ROOT to be set in your environment (e.g. in ~/.zshrc).
+if [ -z "$ANDROID_NDK_ROOT" ]; then
+  echo "[ERROR] ANDROID_NDK_ROOT is not set."
+  exit 1
+fi
 export PATH="$ANDROID_NDK_ROOT/toolchains/llvm/prebuilt/darwin-x86_64/bin:$PATH"
 
 get_abi_for_rid() {
