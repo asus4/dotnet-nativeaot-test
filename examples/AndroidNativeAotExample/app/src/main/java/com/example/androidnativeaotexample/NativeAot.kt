@@ -2,6 +2,7 @@ package com.example.androidnativeaotexample
 
 import android.os.Handler
 import android.os.Looper
+import android.system.Os
 import dalvik.annotation.optimization.CriticalNative
 import dalvik.annotation.optimization.FastNative
 
@@ -11,6 +12,9 @@ object NativeAot {
     }
 
     init {
+        // To use TLS, need to set this
+        Os.setenv("SSL_CERT_DIR", "/system/etc/security/cacerts", true)
+
         // Loads the JNI shim.
         // The C# NativeAOT lib is loaded automatically.
         System.loadLibrary("aot_jni")

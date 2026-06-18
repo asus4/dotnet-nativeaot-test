@@ -16,8 +16,7 @@
     <InternalsVisibleTo Include="NativeAotLib.Tests" />
   </ItemGroup>
 
-  <ItemGroup Condition="$(RuntimeIdentifier.StartsWith('android'))">
-    <!-- Link with SONAME -->
+  <ItemGroup Condition="$(RuntimeIdentifier.StartsWith('android')) Or $(RuntimeIdentifier.StartsWith('linux-bionic'))">
     <LinkerArg Include="-Wl,-soname,libNativeAotLib.so" />
   </ItemGroup>
 </Project>

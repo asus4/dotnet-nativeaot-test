@@ -9,6 +9,7 @@ The goal is to test a minimal workflow for C# -> native interop.
 - `tests/NativeAotLib.Tests/`: Pure C# (xUnit) tests for the library logic, no native build required
 - `build/build_apple.sh`: Generates xcframework for macOS / iOS
 - `build/build_android.sh`: Generates .so files for Android
+- `build/build_openssl_android.sh`: Builds OpenSSL (`libssl.so`/`libcrypto.so`) for Android
 - `examples/AppleNativeAotExample/`: An example Xcode project.
 - `examples/AndroidNativeAotExample/`: An example Android Studio project.
 
@@ -27,14 +28,25 @@ dotnet test
 # Run Apple interop tests on macOS if you have modified the Apple example.
 ./build/test_apple.sh
 
+# Build OpenSSL for Android (once; required for HTTPS — see Notes).
+./build/build_openssl_android.sh
+
 # Build .so for Android and move it to the Android Studio project
 ./build/build_android.sh
 
-# Run Android instrumented tests if you have modified the android.
+# Run Android instrumented tests
 cd examples/AndroidNativeAotExample && ./gradlew connectedAndroidTest
 ```
 
+## Notes
+
+### Android HTTPS / TLS
+
+Android needs the **`linux-bionic-*`** RIDs rather than the `android-*` RIDs to make HTTPS work.
+Read the official doc for more details: [Android-Bionic](https://github.com/dotnet/runtime/blob/main/src/coreclr/nativeaot/docs/android-bionic.md).
+
 ## References
 
+- [NativeAOT documents](https://github.com/dotnet/runtime/blob/main/src/coreclr/nativeaot/docs/android).
 - List of Runtime Identifiers (RIDs): <https://learn.microsoft.com/en-us/dotnet/core/rid-catalog#known-rids>
 - Native AOT iOS tutorial: <https://learn.microsoft.com/en-us/dotnet/core/deploying/native-aot/ios-like-platforms/creating-and-consuming-custom-frameworks>

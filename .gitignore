@@ -7,5 +7,9 @@
 *.aar
 *.so
 
+# OpenSSL cross-build (cloned source + per-ABI build trees) for Android HTTPS
+build/openssl-src/
+build/openssl-build/
+
 ## Xcode user data
 xcuserdata/
