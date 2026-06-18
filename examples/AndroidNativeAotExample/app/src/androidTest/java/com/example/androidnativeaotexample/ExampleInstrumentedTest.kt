@@ -37,8 +37,7 @@ class ExampleInstrumentedTest {
     val latch = CountDownLatch(1)
     var result = ""
 
-    // TODO: Support https. NativeAOT on Android has no working TLS backend.
-    NativeAot.httpGet("http://example.com") { r ->
+    NativeAot.httpGet("https://example.com") { r ->
       result = r
       latch.countDown()
     }

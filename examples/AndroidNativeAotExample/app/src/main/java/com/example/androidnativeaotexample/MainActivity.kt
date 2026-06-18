@@ -63,8 +63,7 @@ private fun NativeAotView(
             onClick = {
               isHttpLoading = true
               httpResult = "Loading…"
-                // TODO: Support https
-                NativeAot.httpGet("http://example.com") { result ->
+              NativeAot.httpGet("https://example.com") { result ->
                 httpResult = result.take(200)
                 isHttpLoading = false
               }
