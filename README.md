@@ -38,15 +38,13 @@ dotnet test
 cd examples/AndroidNativeAotExample && ./gradlew connectedAndroidTest
 ```
 
-## Notes
+## Documents
 
-### Android HTTPS / TLS
-
-Android needs the **`linux-bionic-*`** RIDs rather than the `android-*` RIDs to make HTTPS work.
-Read the official doc for more details: [Android-Bionic](https://github.com/dotnet/runtime/blob/main/src/coreclr/nativeaot/docs/android-bionic.md).
+- Reducing binary size: [docs/reducing-binary-size.md](docs/reducing-binary-size.md)
 
 ## References
 
 - [NativeAOT documents](https://github.com/dotnet/runtime/blob/main/src/coreclr/nativeaot/docs/android).
+  - Android HTTPS / TLS: [Android-Bionic](https://github.com/dotnet/runtime/blob/main/src/coreclr/nativeaot/docs/android-bionic.md)
 - List of Runtime Identifiers (RIDs): <https://learn.microsoft.com/en-us/dotnet/core/rid-catalog#known-rids>
 - Native AOT iOS tutorial: <https://learn.microsoft.com/en-us/dotnet/core/deploying/native-aot/ios-like-platforms/creating-and-consuming-custom-frameworks>

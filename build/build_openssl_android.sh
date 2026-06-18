@@ -60,16 +60,20 @@ for abi in "${ABIS[@]}"; do
   mkdir -p "$build_dir"
   (
     cd "$build_dir"
-    # no-tests keeps the configure step lean; the build_libs target below builds
-    # only libssl.so + libcrypto.so (no apps), which is all we ship.
+    # no-tests + build_libs build only the libs we ship (no apps/test suite).
+    # -Os trades -O3 speed for size: a TLS shim never stresses the crypto hot
+    # paths, so it's a free win.
     "$SRC_ABS/Configure" "$target" -D__ANDROID_API__="$ANDROID_API" \
-      no-tests shared
+      no-tests shared -Os
     make -j"$(sysctl -n hw.ncpu)" build_libs
   )
 
   out_dir="$JNILIBS_DIR/$abi"
   mkdir -p "$out_dir"
+  # OpenSSL ships unstripped; --strip-unneeded keeps the exported (dynamic)
+  # symbols the shim dlsym()s while dropping the rest — ~15% off libcrypto.so.
   for lib in libssl.so libcrypto.so; do
+    llvm-strip --strip-unneeded "$build_dir/$lib"
     cp "$build_dir/$lib" "$out_dir/$lib"
     echo "[OK] $build_dir/$lib -> $out_dir/$lib"
   done
