@@ -7,7 +7,7 @@ cd "$(dirname "$0")/.."
 PROJECT="src/NativeAotLib/NativeAotLib.csproj"
 LIBRARY_NAME="NativeAotLib"
 BASE_PATH="src/NativeAotLib/bin/Release/net10.0"
-JNILIBS_DIR="examples/MyNativeAOTAndroid/app/src/main/jniLibs"
+JNILIBS_DIR="examples/AndroidNativeAotExample/app/src/main/jniLibs"
 
 # Expects ANDROID_NDK_ROOT to be set in your environment (e.g. in ~/.zshrc).
 if [ -z "$ANDROID_NDK_ROOT" ]; then

@@ -8,8 +8,8 @@ The goal is to test a minimal workflow for C# -> native interop.
 - `src/NativeAotLib/`: Shared .NET library
 - `build/build_apple.sh`: Generates xcframework for macOS / iOS
 - `build/build_android.sh`: Generates .so files for Android
-- `examples/MyNativeAOTApple/`: An example Xcode project.
-- `examples/MyNativeAOTAndroid/`: An example Android Studio project.
+- `examples/AppleNativeAotExample/`: An example Xcode project.
+- `examples/AndroidNativeAotExample/`: An example Android Studio project.
 
 ## How to Verify
 
@@ -22,5 +22,5 @@ The goal is to test a minimal workflow for C# -> native interop.
 ./build/build_android.sh
 
 # Run Android instrumented tests if you have modified the android.
-cd examples/MyNativeAOTAndroid && ./gradlew connectedAndroidTest
+cd examples/AndroidNativeAotExample && ./gradlew connectedAndroidTest
 ```

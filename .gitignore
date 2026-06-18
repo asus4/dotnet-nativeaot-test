@@ -2,12 +2,10 @@
 [Bb]in/
 [Oo]bj/
 
-# Build cache
+# Build artifacts
 *.xcframework
 *.aar
-
-# Native AOT outputs from build_android.sh
-examples/MyNativeAOTAndroid/app/src/main/jniLibs/
+*.so
 
 ## Xcode user data
 xcuserdata/

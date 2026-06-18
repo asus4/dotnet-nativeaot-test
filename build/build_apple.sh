@@ -101,7 +101,7 @@ xcodebuild -create-xcframework \
 
 echo "✅ Created: $FRAMEWORK_NAME.xcframework"
 
-# Move XCFramework to MyNativeAOTApple project
-DEST="$ROOT/examples/MyNativeAOTApple/MyNativeAOTApple"
+# Move XCFramework to AppleNativeAotExample project
+DEST="$ROOT/examples/AppleNativeAotExample/AppleNativeAotExample"
 rm -rf "$DEST/$FRAMEWORK_NAME.xcframework"
 mv $FRAMEWORK_NAME.xcframework "$DEST"

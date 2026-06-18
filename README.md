@@ -8,11 +8,11 @@ The goal is to test a minimal workflow for C# -> native interop.
 ```bash
 # Apple (macOS / iOS / iOS simulator → xcframework)
 ./build/build_apple.sh
-# Then open examples/MyNativeAOTApple/MyNativeAOTTApple.xcodeproj in Xcode and run.
+# Then open examples/AppleNativeAotExample/AppleNativeAotExample.xcodeproj in Xcode and run.
 
 # Android (arm64-v8a + x86_64 → jniLibs)
 ./build/build_android.sh
-# Then open examples/MyNativeAOTAndroid in Android Studio and run.
+# Then open examples/AndroidNativeAotExample in Android Studio and run.
 ```
 
 ## References
