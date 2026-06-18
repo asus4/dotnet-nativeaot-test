@@ -6,6 +6,7 @@ The goal is to test a minimal workflow for C# -> native interop.
 ## Layout
 
 - `src/NativeAotLib/`: Shared .NET library
+- `tests/NativeAotLib.Tests/`: Pure C# (xUnit) tests for the library logic, no native build required
 - `build/build_apple.sh`: Generates xcframework for macOS / iOS
 - `build/build_android.sh`: Generates .so files for Android
 - `examples/AppleNativeAotExample/`: An example Xcode project.
@@ -16,6 +17,9 @@ The goal is to test a minimal workflow for C# -> native interop.
 ```sh
 # Verify C# builds
 dotnet build dotnet-nativeaot-test.slnx
+
+# Run the pure C# tests
+dotnet test
 
 # Build xcframework for macOS / iOS and move it to the Xcode project
 ./build/build_apple.sh

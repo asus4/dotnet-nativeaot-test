@@ -5,23 +5,27 @@ namespace NativeAotLib.Core;
 
 public class NativeEntryPoint
 {
-    private static readonly HttpClient s_httpClient = new HttpClient();
+    static readonly HttpClient s_httpClient = new();
 
     [UnmanagedCallersOnly(EntryPoint = "aotsample_add")]
-    public static int Add(int a, int b)
-    {
-        return a + b;
-    }
+    public static int Add(int a, int b) => AddCore(a, b);
+
+    internal static int AddCore(int a, int b) => a + b;
 
     [UnmanagedCallersOnly(EntryPoint = "aotsample_write_line")]
     public static int WriteLine(IntPtr pString)
     {
+        var str = Marshal.PtrToStringAnsi(pString);
+        return WriteLineCore(str);
+    }
+
+    internal static int WriteLineCore(string? str)
+    {
         try
         {
-            var str = Marshal.PtrToStringAnsi(pString);
             if (string.IsNullOrEmpty(str))
             {
-                throw new ArgumentNullException(nameof(pString));
+                throw new ArgumentNullException(nameof(str));
             }
             Console.WriteLine(str);
         }
@@ -35,40 +39,34 @@ public class NativeEntryPoint
     [UnmanagedCallersOnly(EntryPoint = "aotsample_sumstring")]
     public static IntPtr SumString(IntPtr first, IntPtr second)
     {
+        var firstStr = Marshal.PtrToStringAnsi(first);
+        var secondStr = Marshal.PtrToStringAnsi(second);
+        var sum = SumStringCore(firstStr, secondStr);
+        return sum is null ? IntPtr.Zero : Marshal.StringToHGlobalAnsi(sum);
+    }
+
+    internal static string? SumStringCore(string? first, string? second)
+    {
         try
         {
-            var firstStr = Marshal.PtrToStringAnsi(first);
-            var secondStr = Marshal.PtrToStringAnsi(second);
-            if (string.IsNullOrEmpty(firstStr))
+            if (string.IsNullOrEmpty(first))
             {
                 throw new ArgumentNullException(nameof(first));
             }
-            if (string.IsNullOrEmpty(secondStr))
+            if (string.IsNullOrEmpty(second))
             {
                 throw new ArgumentNullException(nameof(second));
             }
 
-            // Concatenate strings 
-            string sum = $"{firstStr}{secondStr}";
-            IntPtr sumPointer = Marshal.StringToHGlobalAnsi(sum);
-            return sumPointer;
+            // Concatenate strings
+            return $"{first}{second}";
         }
         catch
         {
-            return IntPtr.Zero;
+            return null;
         }
     }
 
-    /// <summary>
-    /// Performs an async HTTP GET and reports the result through a native callback.
-    /// </summary>
-    /// <remarks>
-    /// A <see cref="UnmanagedCallersOnly"/> entry point cannot return a <see cref="Task"/> across
-    /// the native boundary, so this method returns immediately and runs the request on a background
-    /// <see cref="Task"/>. When it completes it invokes <paramref name="callback"/> exactly once with
-    /// the result (or "ERROR: ..."). The result pointer is only valid for the duration of the callback
-    /// — it is freed right after the callback returns, so callers must copy the string before returning.
-    /// </remarks>
     [UnmanagedCallersOnly(EntryPoint = "aotsample_http_get", CallConvs = new[] { typeof(CallConvCdecl) })]
     public static void HttpGet(IntPtr pUrl, IntPtr callback)
     {
@@ -98,15 +96,13 @@ public class NativeEntryPoint
         });
     }
 
-    // Calling a native function pointer requires an unsafe context, which is not allowed in an
-    // async method — so the cast and call live in this small synchronous helper.
-    private static unsafe void InvokeCallback(IntPtr callback, IntPtr result)
+    static unsafe void InvokeCallback(IntPtr callback, IntPtr result)
     {
         var cb = (delegate* unmanaged[Cdecl]<IntPtr, void>)callback;
         cb(result);
     }
 
-    private static async Task<string> HttpGetAsync(string url)
+    internal static async Task<string> HttpGetAsync(string url)
     {
         using var response = await s_httpClient.GetAsync(url);
         var body = await response.Content.ReadAsStringAsync();

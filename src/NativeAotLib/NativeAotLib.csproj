@@ -9,9 +9,12 @@
     <PublishAot>true</PublishAot>
     <PublishAotUsingRuntimePack>true</PublishAotUsingRuntimePack>
 
-    <!-- Required for the delegate* unmanaged function-pointer callback in HttpGet. -->
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="NativeAotLib.Tests" />
+  </ItemGroup>
 
   <ItemGroup Condition="$(RuntimeIdentifier.StartsWith('android'))">
     <!-- Link with SONAME -->
