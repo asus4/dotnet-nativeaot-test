@@ -20,4 +20,12 @@ struct NativeAotTests {
     @Test func sumString() {
         #expect(NativeAot.sumString("Hello, ", "World!") == "Hello, World!")
     }
+
+    @Test func httpGet() async {
+        let result = await withCheckedContinuation { continuation in
+            NativeAot.httpGet("https://example.com") { continuation.resume(returning: $0) }
+        }
+        // C# returns "<status> <reason>\n<body>" on success, or "ERROR: ..." on failure.
+        #expect(result.hasPrefix("200"), "Expected a 200 response, got: \(result.prefix(80))")
+    }
 }

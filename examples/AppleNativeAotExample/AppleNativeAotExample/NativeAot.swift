@@ -23,4 +23,23 @@ enum NativeAot {
         defer { free(cString) }
         return String(cString: cString)
     }
+
+    /// Holds the pending HTTP completion. The C callback can't capture context, so we stash it
+    /// here. Only one request runs at a time (the UI button is disabled while loading), so a
+    /// single slot is sufficient.
+    private static var pendingHttpCompletion: ((String) -> Void)?
+
+    /// Performs an async HTTP GET in C# and delivers the result on the main queue.
+    static func httpGet(_ url: String, completion: @escaping (String) -> Void) {
+        pendingHttpCompletion = completion
+        aotsample_http_get(url) { result in
+            // Runs on a background (.NET) thread; `result` is only valid during this call.
+            let text = result.map { String(cString: $0) } ?? ""
+            DispatchQueue.main.async {
+                let completion = NativeAot.pendingHttpCompletion
+                NativeAot.pendingHttpCompletion = nil
+                completion?(text)
+            }
+        }
+    }
 }

@@ -9,6 +9,8 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var sumResult: String = ""
+    @State private var httpResult: String = ""
+    @State private var isHttpLoading: Bool = false
 
     var body: some View {
         VStack(spacing: 32) {
@@ -25,6 +27,18 @@ struct ContentView: View {
             }
 
             Text(sumResult)
+
+            Button("HTTP GET") {
+                isHttpLoading = true
+                httpResult = "Loading…"
+                NativeAot.httpGet("https://example.com") { result in
+                    httpResult = String(result.prefix(200))
+                    isHttpLoading = false
+                }
+            }
+            .disabled(isHttpLoading)
+
+            Text(httpResult)
 
         }
         .padding()

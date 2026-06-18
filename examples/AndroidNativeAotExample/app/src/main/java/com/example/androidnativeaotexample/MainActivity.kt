@@ -43,6 +43,8 @@ private fun NativeAotView(
     onSumString: () -> String,
 ) {
   var sumResult by remember { mutableStateOf("") }
+  var httpResult by remember { mutableStateOf("") }
+  var isHttpLoading by remember { mutableStateOf(false) }
 
   Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
     Box(modifier = Modifier.fillMaxSize().padding(innerPadding)) {
@@ -55,14 +57,28 @@ private fun NativeAotView(
         ActionButton(text = "Write Logcat from C#", onClick = onWriteLine)
         ActionButton(text = "Sum Strings in C#", onClick = { sumResult = onSumString() })
         Text(text = sumResult)
+        ActionButton(
+            text = "HTTP GET in C#",
+            enabled = !isHttpLoading,
+            onClick = {
+              isHttpLoading = true
+              httpResult = "Loading…"
+                // TODO: Support https
+                NativeAot.httpGet("http://example.com") { result ->
+                httpResult = result.take(200)
+                isHttpLoading = false
+              }
+            },
+        )
+        Text(text = httpResult)
       }
     }
   }
 }
 
 @Composable
-private fun ActionButton(text: String, onClick: () -> Unit) {
-  Button(onClick = onClick) { Text(text) }
+private fun ActionButton(text: String, enabled: Boolean = true, onClick: () -> Unit) {
+  Button(onClick = onClick, enabled = enabled) { Text(text) }
 }
 
 @Preview(showBackground = true)
