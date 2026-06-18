@@ -1,39 +1,19 @@
-﻿using System.Runtime.CompilerServices;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-namespace NativeAotLib.Core;
+namespace NativeAotLib;
 
-public class NativeEntryPoint
+// [UnmanagedCallersOnly] entry points exported to native code.
+public static class NativeMethods
 {
-    static readonly HttpClient s_httpClient = new();
-
     [UnmanagedCallersOnly(EntryPoint = "aotsample_add")]
-    public static int Add(int a, int b) => AddCore(a, b);
-
-    internal static int AddCore(int a, int b) => a + b;
+    public static int Add(int a, int b) => CoreLib.AddCore(a, b);
 
     [UnmanagedCallersOnly(EntryPoint = "aotsample_write_line")]
     public static int WriteLine(IntPtr pString)
     {
         var str = Marshal.PtrToStringAnsi(pString);
-        return WriteLineCore(str);
-    }
-
-    internal static int WriteLineCore(string? str)
-    {
-        try
-        {
-            if (string.IsNullOrEmpty(str))
-            {
-                throw new ArgumentNullException(nameof(str));
-            }
-            Console.WriteLine(str);
-        }
-        catch
-        {
-            return -1;
-        }
-        return 0;
+        return CoreLib.WriteLineCore(str);
     }
 
     [UnmanagedCallersOnly(EntryPoint = "aotsample_sumstring")]
@@ -41,30 +21,8 @@ public class NativeEntryPoint
     {
         var firstStr = Marshal.PtrToStringAnsi(first);
         var secondStr = Marshal.PtrToStringAnsi(second);
-        var sum = SumStringCore(firstStr, secondStr);
+        var sum = CoreLib.SumStringCore(firstStr, secondStr);
         return sum is null ? IntPtr.Zero : Marshal.StringToHGlobalAnsi(sum);
-    }
-
-    internal static string? SumStringCore(string? first, string? second)
-    {
-        try
-        {
-            if (string.IsNullOrEmpty(first))
-            {
-                throw new ArgumentNullException(nameof(first));
-            }
-            if (string.IsNullOrEmpty(second))
-            {
-                throw new ArgumentNullException(nameof(second));
-            }
-
-            // Concatenate strings
-            return $"{first}{second}";
-        }
-        catch
-        {
-            return null;
-        }
     }
 
     [UnmanagedCallersOnly(EntryPoint = "aotsample_http_get", CallConvs = new[] { typeof(CallConvCdecl) })]
@@ -77,7 +35,7 @@ public class NativeEntryPoint
             string result;
             try
             {
-                result = await HttpGetAsync(url);
+                result = await CoreLib.HttpGetAsync(url);
             }
             catch (Exception e)
             {
@@ -100,12 +58,5 @@ public class NativeEntryPoint
     {
         var cb = (delegate* unmanaged[Cdecl]<IntPtr, void>)callback;
         cb(result);
-    }
-
-    internal static async Task<string> HttpGetAsync(string url)
-    {
-        using var response = await s_httpClient.GetAsync(url);
-        var body = await response.Content.ReadAsStringAsync();
-        return $"{(int)response.StatusCode} {response.ReasonPhrase}\n{body}";
     }
 }
