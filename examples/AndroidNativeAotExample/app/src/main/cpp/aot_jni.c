@@ -89,6 +89,12 @@ JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM *vm, void *reserved) {
                     (void *) aotsample_add
             },
             {
+                    "aotsample_fibonacci",
+                    "(I)J",
+                    // no wrapper for @CriticalNative
+                    (void *) aotsample_fibonacci
+            },
+            {
                     "aotsample_write_line",
                     "(Ljava/lang/String;)I",
                     (void *) write_line_jni

@@ -1,11 +1,21 @@
+using System.Runtime.InteropServices;
+
 namespace NativeAotLib;
 
 // Pure managed logic, exercised directly by C# tests and called by the native wrappers in NativeMethods.
-static class CoreLib
+static partial class CoreLib
 {
     static readonly Lazy<HttpClient> s_httpClient = new(() => new HttpClient());
 
     internal static int AddCore(int a, int b) => a + b;
+
+    // P/Invoke into the NativeFib NuGet native package. DirectPInvoke ("nativefib") +
+    // NativeLibrary (libnativefib.a) from the package's build/NativeFib.targets statically
+    // link this symbol into the AOT output, so there is no separate library to load.
+    [LibraryImport("nativefib", EntryPoint = "nativefib_fibonacci")]
+    private static partial long NativeFibonacci(int n);
+
+    internal static long FibonacciCore(int n) => NativeFibonacci(n);
 
     internal static int WriteLineCore(string? str)
     {

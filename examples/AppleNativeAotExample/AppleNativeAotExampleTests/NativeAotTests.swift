@@ -21,6 +21,12 @@ struct NativeAotTests {
         #expect(NativeAot.sumString("Hello, ", "World!") == "Hello, World!")
     }
 
+    @Test func fibonacci() {
+        // Exercises the NativeFib NuGet native package through the C# bridge.
+        #expect(NativeAot.fibonacci(10) == 55)
+        #expect(NativeAot.fibonacci(0) == 0)
+    }
+
     @Test func httpGet() async {
         let result = await withCheckedContinuation { continuation in
             NativeAot.httpGet("https://example.com") { continuation.resume(returning: $0) }

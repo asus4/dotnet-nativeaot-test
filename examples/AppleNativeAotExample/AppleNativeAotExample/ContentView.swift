@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var sumResult: String = ""
+    @State private var fibResult: String = ""
     @State private var httpResult: String = ""
     @State private var isHttpLoading: Bool = false
 
@@ -27,6 +28,12 @@ struct ContentView: View {
             }
 
             Text(sumResult)
+
+            Button("Fibonacci") {
+                fibResult = "fib(10) = \(NativeAot.fibonacci(10))"
+            }
+
+            Text(fibResult)
 
             Button("HTTP GET") {
                 isHttpLoading = true

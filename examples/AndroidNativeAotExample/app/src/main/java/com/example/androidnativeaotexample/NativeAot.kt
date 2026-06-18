@@ -24,6 +24,11 @@ object NativeAot {
     @CriticalNative
     external fun aotsample_add(a: Int, b: Int): Int
 
+    // Computes Fibonacci via the NativeFib NuGet native package (statically linked into the C# lib).
+    @JvmStatic
+    @CriticalNative
+    external fun aotsample_fibonacci(n: Int): Long
+
     @JvmStatic
     @FastNative
     external fun aotsample_write_line(s: String): Int
@@ -39,6 +44,8 @@ object NativeAot {
     private val mainHandler = Handler(Looper.getMainLooper())
 
     fun add(a: Int, b: Int): Int = aotsample_add(a, b)
+
+    fun fibonacci(n: Int): Long = aotsample_fibonacci(n)
 
     fun writeLine(message: String): Boolean = aotsample_write_line(message) == 0
 

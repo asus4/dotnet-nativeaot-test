@@ -31,6 +31,7 @@ class MainActivity : ComponentActivity() {
           addResult = NativeAot.add(15, 2),
           onWriteLine = { NativeAot.writeLine("Hello from Kotlin!") },
           onSumString = { NativeAot.sumString("Hello, ", "World!") ?: "" },
+          onFibonacci = { "fib(10) = ${NativeAot.fibonacci(10)}" },
       )
     }
   }
@@ -41,8 +42,10 @@ private fun NativeAotView(
     addResult: Int,
     onWriteLine: () -> Unit,
     onSumString: () -> String,
+    onFibonacci: () -> String,
 ) {
   var sumResult by remember { mutableStateOf("") }
+  var fibResult by remember { mutableStateOf("") }
   var httpResult by remember { mutableStateOf("") }
   var isHttpLoading by remember { mutableStateOf(false) }
 
@@ -57,6 +60,8 @@ private fun NativeAotView(
         ActionButton(text = "Write Logcat from C#", onClick = onWriteLine)
         ActionButton(text = "Sum Strings in C#", onClick = { sumResult = onSumString() })
         Text(text = sumResult)
+        ActionButton(text = "Fibonacci in C#", onClick = { fibResult = onFibonacci() })
+        Text(text = fibResult)
         ActionButton(
             text = "HTTP GET in C#",
             enabled = !isHttpLoading,
@@ -87,5 +92,6 @@ private fun NativeAotViewPreview() {
       addResult = 17,
       onWriteLine = {},
       onSumString = { "Hello, World!" },
+      onFibonacci = { "fib(10) = 55" },
   )
 }

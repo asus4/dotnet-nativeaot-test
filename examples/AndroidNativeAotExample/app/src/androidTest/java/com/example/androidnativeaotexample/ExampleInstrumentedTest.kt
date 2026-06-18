@@ -30,6 +30,9 @@ class ExampleInstrumentedTest {
     assertEquals(17, NativeAot.add(15, 2))
     assertTrue(NativeAot.writeLine("Hello from instrumentation!"))
     assertEquals("Hello, World!", NativeAot.sumString("Hello, ", "World!"))
+    // Exercises the NativeFib NuGet native package through the C# bridge.
+    assertEquals(55L, NativeAot.fibonacci(10))
+    assertEquals(0L, NativeAot.fibonacci(0))
   }
 
   @Test

@@ -13,6 +13,12 @@ enum NativeAot {
         aotsample_add(a, b)
     }
 
+    /// Computes the n-th Fibonacci number via the NativeFib NuGet native package
+    /// (C# export -> statically linked native code).
+    static func fibonacci(_ n: Int32) -> Int64 {
+        aotsample_fibonacci(n)
+    }
+
     @discardableResult
     static func writeLine(_ message: String) -> Bool {
         aotsample_write_line(message) == 0

@@ -1,0 +1,16 @@
+<Project>
+
+  <!--
+    NativeFib consumer logic. Statically links the per-RID libnativefib.a into the
+    Native AOT output so the `nativefib_fibonacci` symbol is baked into the final
+    NativeAotLib .dylib/.so — no extra files to ship in the xcframework or jniLibs.
+
+    Only applies to RID/AOT publishes. Plain `dotnet build`/`dotnet test` (no RID)
+    compile the managed P/Invoke stub but never native-link, so they stay green.
+  -->
+  <ItemGroup Condition="'$(RuntimeIdentifier)' != ''">
+    <DirectPInvoke Include="nativefib" />
+    <NativeLibrary Include="$(MSBuildThisFileDirectory)../runtimes/$(RuntimeIdentifier)/native/libnativefib.a" />
+  </ItemGroup>
+
+</Project>
