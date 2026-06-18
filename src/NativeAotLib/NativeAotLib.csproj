@@ -9,4 +9,9 @@
     <PublishAot>true</PublishAot>
     <PublishAotUsingRuntimePack>true</PublishAotUsingRuntimePack>
   </PropertyGroup>
+
+  <ItemGroup Condition="$(RuntimeIdentifier.StartsWith('android'))">
+    <!-- Link with SONAME -->
+    <LinkerArg Include="-Wl,-soname,libNativeAotLib.so" />
+  </ItemGroup>
 </Project>

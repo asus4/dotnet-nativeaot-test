@@ -5,9 +5,8 @@ import dalvik.annotation.optimization.FastNative
 
 object NativeAot {
     init {
-        // 1. Load C# Native lib first
-        System.loadLibrary("NativeAotLib")
-        // 2. Load JNI wrapper
+        // Loads the JNI shim.
+        // The C# NativeAOT lib is loaded automatically.
         System.loadLibrary("aot_jni")
     }
 

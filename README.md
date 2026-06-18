@@ -1,6 +1,7 @@
-# Native AOT Library Example
+# .NET Native AOT Interop Test
 
-A minimal example of using .NET Native AOT as a native library on iOS / macOS and Android.
+A minimal example that builds an .NET code as a native library for iOS / macOS and Android. Use calls it from native Swift / Kotlin project.
+The goal is to test a minimal workflow for C# -> native interop.
 
 ## How to test
 
