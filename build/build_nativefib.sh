@@ -72,5 +72,5 @@ build_android
 
 # ---- Pack into the local feed ----
 mkdir -p "$FEED_DIR"
-nuget pack "$PKG_DIR/NativeFib.nuspec" -OutputDirectory "$FEED_DIR" -NoDefaultExcludes
+dotnet pack "$PKG_DIR/NativeFib.csproj" --output "$FEED_DIR"
 echo "[DONE] Packed NativeFib into $FEED_DIR"

@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Packaging-only project for the sample "NativeFib" native package: bundles the
+    per-RID static libs (built by build/build_nativefib.sh) and the consumer
+    .targets into a .nupkg via `dotnet pack` — no standalone `nuget` CLI needed.
+
+    NOT listed in dotnet-nativeaot-test.slnx; NativeAotLib consumes it via
+    <PackageReference> restored from packages/local-feed.
+  -->
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+    <PackageId>NativeFib</PackageId>
+    <Version>1.0.0</Version>
+    <Authors>dotnet-nativeaot-test</Authors>
+    <Description>Sample NuGet native package: a Fibonacci function shipped as per-RID static libs (macOS/iOS/Android) and statically linked into Native AOT builds.</Description>
+    <DevelopmentDependency>true</DevelopmentDependency>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="build/NativeFib.targets" Pack="true" PackagePath="build/;buildTransitive/" />
+    <None Include="runtimes/**/*.a" Pack="true" PackagePath="runtimes" />
+  </ItemGroup>
+
+</Project>
