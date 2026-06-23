@@ -7,7 +7,7 @@ The goal is to test a minimal workflow for C# -> native interop.
 
 - `src/NativeAotLib/`: Shared .NET library
 - `tests/NativeAotLib.Tests/`: Pure C# (xUnit) tests for the library logic, no native build required
-- `src/NativeFib/`: Sample native component (a Fibonacci C function built as per-RID static libs). `NativeAotLib` imports `src/NativeFib/build/NativeFib.targets` directly, which statically links the matching `libnativefib.a` into the AOT build.
+- `src/NativeFib/`: Sample native library, which statically links the matching `libnativefib.a` into the AOT build.
 - `build/build_nativefib.sh`: Compiles the per-RID NativeFib static libs
 - `build/build_apple.sh`: Generates xcframework for macOS / iOS
 - `build/build_android.sh`: Generates .so files for Android
@@ -18,8 +18,7 @@ The goal is to test a minimal workflow for C# -> native interop.
 ## How to Verify
 
 ```sh
-# Compile the sample NativeFib static libs (once, before the native builds —
-# NativeAotLib statically links the matching libnativefib.a at AOT publish time).
+# Compile the sample NativeFib static libs
 ./build/build_nativefib.sh
 
 # Verify C# builds
