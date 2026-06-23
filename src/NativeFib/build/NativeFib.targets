@@ -1,0 +1,11 @@
+<Project>
+
+  <!--
+  Statically links the matching libnativefib.a into the AOT output.
+  -->
+  <ItemGroup Condition="'$(RuntimeIdentifier)' != ''">
+    <DirectPInvoke Include="nativefib" />
+    <NativeLibrary Include="$(MSBuildThisFileDirectory)../runtimes/$(RuntimeIdentifier)/native/libnativefib.a" />
+  </ItemGroup>
+
+</Project>

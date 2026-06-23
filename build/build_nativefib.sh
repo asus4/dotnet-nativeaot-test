@@ -1,24 +1,22 @@
 #!/bin/bash
 set -e
 
-# Builds the sample "NativeFib" NuGet native package: compiles the Fibonacci C
-# source into a per-RID static library (libnativefib.a) for every RID that
-# NativeAotLib publishes for, then packs the .nupkg into a local feed.
+# Compiles the "NativeFib" Fibonacci C source into a per-RID static
+# library (libnativefib.a) for every RID.
 #
-# Run this ONCE before ./build/build_apple.sh / ./build/build_android.sh — the
-# library has a <PackageReference> on NativeFib that restores from the local feed.
+# Run this ONCE before 
+# ./build/build_apple.sh
+# ./build/build_android.sh
 
 # Run from the repo root regardless of where the script is invoked.
 cd "$(dirname "$0")/.."
 
-PKG_DIR="packages/NativeFib"
+PKG_DIR="src/NativeFib"
 SRC="$PKG_DIR/native/fib.c"
 LIB_NAME="nativefib" # produces libnativefib.a
-FEED_DIR="packages/local-feed"
 
 # ---- Apple slices (clang via xcrun) ----
-# rid | sdk | target-triple (min-OS versions kept at/below what the .NET AOT
-# linker targets, so the archived objects don't trigger deployment-target warnings).
+# rid | sdk | target-triple
 APPLE_TARGETS=(
   "osx-arm64|macosx|arm64-apple-macos11.0"
   "osx-x64|macosx|x86_64-apple-macos11.0"
@@ -70,7 +68,4 @@ build_android() {
 build_apple
 build_android
 
-# ---- Pack into the local feed ----
-mkdir -p "$FEED_DIR"
-dotnet pack "$PKG_DIR/NativeFib.csproj" --output "$FEED_DIR"
-echo "[DONE] Packed NativeFib into $FEED_DIR"
+echo "[DONE] Built NativeFib static libs into $PKG_DIR/runtimes"

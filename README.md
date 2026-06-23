@@ -7,8 +7,8 @@ The goal is to test a minimal workflow for C# -> native interop.
 
 - `src/NativeAotLib/`: Shared .NET library
 - `tests/NativeAotLib.Tests/`: Pure C# (xUnit) tests for the library logic, no native build required
-- `packages/NativeFib/`: Sample NuGet native package (a Fibonacci C function shipped as per-RID static libs, statically linked into the AOT build). Demonstrates consuming a [NuGet native package](https://learn.microsoft.com/en-us/nuget/create-packages/native-files-in-net-packages).
-- `build/build_nativefib.sh`: Compiles the NativeFib static libs and packs the `.nupkg` into a local feed
+- `src/NativeFib/`: Sample native component (a Fibonacci C function built as per-RID static libs). `NativeAotLib` imports `src/NativeFib/build/NativeFib.targets` directly, which statically links the matching `libnativefib.a` into the AOT build.
+- `build/build_nativefib.sh`: Compiles the per-RID NativeFib static libs
 - `build/build_apple.sh`: Generates xcframework for macOS / iOS
 - `build/build_android.sh`: Generates .so files for Android
 - `build/build_openssl_android.sh`: Builds OpenSSL (`libssl.so`/`libcrypto.so`) for Android
@@ -18,8 +18,8 @@ The goal is to test a minimal workflow for C# -> native interop.
 ## How to Verify
 
 ```sh
-# Build the sample NativeFib native package into the local feed (once, before the
-# C#/native builds — NativeAotLib has a PackageReference that restores from it).
+# Compile the sample NativeFib static libs (once, before the native builds —
+# NativeAotLib statically links the matching libnativefib.a at AOT publish time).
 ./build/build_nativefib.sh
 
 # Verify C# builds

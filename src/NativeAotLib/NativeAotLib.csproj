@@ -17,12 +17,10 @@
     <InternalsVisibleTo Include="NativeAotLib.Tests" />
   </ItemGroup>
 
-  <ItemGroup>
-    <!-- Sample NuGet native package: ships per-RID libnativefib.a, statically linked at AOT time. -->
-    <PackageReference Include="NativeFib" Version="1.0.0" />
-  </ItemGroup>
-
   <ItemGroup Condition="$(RuntimeIdentifier.StartsWith('android')) Or $(RuntimeIdentifier.StartsWith('linux-bionic'))">
     <LinkerArg Include="-Wl,-soname,libNativeAotLib.so" />
   </ItemGroup>
+
+  <!-- NativeFib: per-RID libnativefib.a, statically linked at AOT time (RID publishes only). -->
+  <Import Project="../NativeFib/build/NativeFib.targets" />
 </Project>

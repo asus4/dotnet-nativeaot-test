@@ -9,9 +9,9 @@ static partial class CoreLib
 
     internal static int AddCore(int a, int b) => a + b;
 
-    // P/Invoke into the NativeFib NuGet native package. DirectPInvoke ("nativefib") +
-    // NativeLibrary (libnativefib.a) from the package's build/NativeFib.targets statically
-    // link this symbol into the AOT output, so there is no separate library to load.
+    // P/Invoke into the NativeFib native static lib. DirectPInvoke ("nativefib") +
+    // NativeLibrary (libnativefib.a) from the imported src/NativeFib/build/NativeFib.targets
+    // statically link this symbol into the AOT output, so there is no separate library to load.
     [LibraryImport("nativefib", EntryPoint = "nativefib_fibonacci")]
     private static partial long NativeFibonacci(int n);
 

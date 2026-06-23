@@ -9,7 +9,7 @@ public static class NativeMethods
     [UnmanagedCallersOnly(EntryPoint = "aotsample_add")]
     public static int Add(int a, int b) => CoreLib.AddCore(a, b);
 
-    // Calls into the NativeFib NuGet native package via CoreLib.
+    // Calls into the NativeFib native static lib via CoreLib.
     [UnmanagedCallersOnly(EntryPoint = "aotsample_fibonacci")]
     public static long Fibonacci(int n) => CoreLib.FibonacciCore(n);
 

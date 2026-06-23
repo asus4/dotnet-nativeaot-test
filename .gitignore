@@ -6,14 +6,11 @@
 *.xcframework
 *.aar
 *.so
+*.a
 
 # OpenSSL cross-build (cloned source + per-ABI build trees) for Android HTTPS
 build/openssl-src/
 build/openssl-build/
-
-# NativeFib sample package build outputs (regenerate via ./build/build_nativefib.sh)
-packages/NativeFib/runtimes/
-packages/local-feed/
 
 ## Xcode user data
 xcuserdata/
