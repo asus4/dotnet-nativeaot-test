@@ -1,3 +1,4 @@
+using System.Globalization;
 using NativeAotLib;
 
 namespace NativeAotLib.Tests;
@@ -45,6 +46,40 @@ public class CoreLibTests
         Assert.Null(CoreLib.SumStringCore(first, second));
     }
 
+    #region Globalization Tests
+
+    [Fact]
+    public void NowStringCore_ContainsParsableLocalAndUtc()
+    {
+        var result = CoreLib.NowStringCore();
+
+        // Format: "local=<O> utc=<O>".
+        var parts = result.Split(' ');
+        Assert.Equal(2, parts.Length);
+        Assert.StartsWith("local=", parts[0]);
+        Assert.StartsWith("utc=", parts[1]);
+        Assert.True(DateTime.TryParse(parts[0]["local=".Length..], out _), $"local not parseable: {result}");
+        Assert.True(DateTime.TryParse(parts[1]["utc=".Length..], out _), $"utc not parseable: {result}");
+    }
+
+    [Fact]
+    public void TodayStringCore_MatchesGregorianToday()
+    {
+        var today = DateTime.Today;
+        Assert.Equal($"{today.Year:D4}-{today.Month:D2}-{today.Day:D2}", CoreLib.TodayStringCore());
+    }
+
+    [Fact]
+    public void CultureStringCore_ReportsInvariantAndBlockedCultureCreation()
+    {
+        var result = CoreLib.CultureStringCore();
+
+        // Invariant culture has an empty name, and creating "ja-JP" is blocked.
+        Assert.Equal("", CultureInfo.CurrentCulture.Name);
+        Assert.Contains("current=''", result);
+        Assert.Contains("createJaJP=CultureNotFoundException", result);
+    }
+
     [Fact]
     [Trait("Category", "Network")]
     public async Task HttpGetAsync_ReturnsSuccessStatusAndBody()
@@ -57,4 +92,5 @@ public class CoreLibTests
         Assert.True(newlineIndex >= 0, "Expected a newline separating status from body.");
         Assert.NotEmpty(result[(newlineIndex + 1)..]);
     }
+    #endregion // Globalization Tests
 }

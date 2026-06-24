@@ -36,6 +36,17 @@ class ExampleInstrumentedTest {
   }
 
   @Test
+  fun globalizationProbesReportInvariantBehavior() {
+    // DateTime.Now / GregorianCalendar work without ICU.
+    assertTrue(NativeAot.now()?.contains("local=") == true)
+    assertFalse(NativeAot.today().isNullOrEmpty())
+    // Invariant mode: empty current culture, ja-JP creation blocked.
+    val culture = NativeAot.culture()
+    assertTrue("culture was: $culture", culture?.contains("current=''") == true)
+    assertTrue("culture was: $culture", culture?.contains("createJaJP=CultureNotFoundException") == true)
+  }
+
+  @Test
   fun httpGetReturnsResponse() {
     val latch = CountDownLatch(1)
     var result = ""

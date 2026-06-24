@@ -30,6 +30,24 @@ enum NativeAot {
         return String(cString: cString)
     }
 
+    // Globalization tests
+
+    /// Current local + UTC time from C# (`DateTime.Now` / `DateTime.UtcNow`).
+    static func now() -> String? { copyAndFree(aotsample_now()) }
+
+    /// Today's date via C#'s `System.Globalization.GregorianCalendar`.
+    static func today() -> String? { copyAndFree(aotsample_today()) }
+
+    /// Current culture name and the result of `new CultureInfo("ja-JP")`.
+    static func culture() -> String? { copyAndFree(aotsample_culture()) }
+
+    /// Copies a C string into a Swift String and frees it.
+    private static func copyAndFree(_ cString: UnsafeMutablePointer<CChar>?) -> String? {
+        guard let cString else { return nil }
+        defer { free(cString) }
+        return String(cString: cString)
+    }
+
     /// Holds the pending HTTP completion. The C callback can't capture context, so we stash it
     /// here. Only one request runs at a time (the UI button is disabled while loading), so a
     /// single slot is sufficient.

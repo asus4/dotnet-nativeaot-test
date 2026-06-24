@@ -15,14 +15,14 @@ The goal is to test a minimal workflow for C# -> native interop.
 ## How to Verify
 
 ```sh
-# Compile the sample NativeFib static libs
-./build/build_nativefib.sh
-
 # Verify C# builds
 dotnet build dotnet-nativeaot-test.slnx
 
 # Run the pure C# tests
 dotnet test
+
+# Compile the sample NativeFib static libs
+./build/build_nativefib.sh
 
 # Build xcframework for macOS / iOS and move it to the Xcode project
 ./build/build_apple.sh
@@ -43,6 +43,7 @@ cd examples/AndroidNativeAotExample && ./gradlew connectedAndroidTest
 ## Documents
 
 - Reducing binary size: [docs/reducing-binary-size.md](docs/reducing-binary-size.md)
+- Globalization support: [docs/globalization-support.md](docs/globalization-support.md)
 
 ## References
 

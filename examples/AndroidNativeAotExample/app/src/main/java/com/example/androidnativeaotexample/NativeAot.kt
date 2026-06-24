@@ -22,24 +22,37 @@ object NativeAot {
 
     @JvmStatic
     @CriticalNative
-    external fun aotsample_add(a: Int, b: Int): Int
+    private external fun aotsample_add(a: Int, b: Int): Int
 
     // Computes Fibonacci via the NativeFib NuGet native package (statically linked into the C# lib).
     @JvmStatic
     @CriticalNative
-    external fun aotsample_fibonacci(n: Int): Long
+    private external fun aotsample_fibonacci(n: Int): Long
 
     @JvmStatic
     @FastNative
-    external fun aotsample_write_line(s: String): Int
+    private external fun aotsample_write_line(s: String): Int
 
     @JvmStatic
     @FastNative
-    external fun aotsample_sumstring(a: String, b: String): String?
+    private external fun aotsample_sumstring(a: String, b: String): String?
 
     // Not @FastNative: returns immediately but the callback arrives later on a .NET thread.
     @JvmStatic
-    external fun aotsample_http_get(url: String, callback: HttpCallback)
+    private external fun aotsample_http_get(url: String, callback: HttpCallback)
+
+    // Globalization probes: each returns a diagnostic string built in C#.
+    @JvmStatic
+    @FastNative
+    private external fun aotsample_now(): String?
+
+    @JvmStatic
+    @FastNative
+    private external fun aotsample_today(): String?
+
+    @JvmStatic
+    @FastNative
+    private external fun aotsample_culture(): String?
 
     private val mainHandler = Handler(Looper.getMainLooper())
 
@@ -54,4 +67,10 @@ object NativeAot {
     fun httpGet(url: String, onResult: (String) -> Unit) {
         aotsample_http_get(url) { result -> mainHandler.post { onResult(result) } }
     }
+
+    fun now(): String? = aotsample_now()
+
+    fun today(): String? = aotsample_today()
+
+    fun culture(): String? = aotsample_culture()
 }

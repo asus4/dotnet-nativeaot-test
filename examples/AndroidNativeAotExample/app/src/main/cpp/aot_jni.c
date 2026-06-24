@@ -37,6 +37,21 @@ static jstring sumstring_jni(JNIEnv *env, jclass cls, jstring a, jstring b) {
     return js;
 }
 
+// Wraps a no-arg C# export that returns a malloc'd C string: copy it into a
+// Java string and free it. Used by the globalization probes.
+static jstring cstring_export_jni(JNIEnv *env, jclass cls, char *(*export)(void)) {
+    (void) cls;
+    char *r = export();
+    if (!r) return NULL;
+    jstring js = (*env)->NewStringUTF(env, r);
+    free(r);
+    return js;
+}
+
+static jstring now_jni(JNIEnv *env, jclass cls) { return cstring_export_jni(env, cls, aotsample_now); }
+static jstring today_jni(JNIEnv *env, jclass cls) { return cstring_export_jni(env, cls, aotsample_today); }
+static jstring culture_jni(JNIEnv *env, jclass cls) { return cstring_export_jni(env, cls, aotsample_culture); }
+
 // Invoked by the C# library
 static void native_http_callback(const char *result) {
     JNIEnv *env;
@@ -108,6 +123,21 @@ JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM *vm, void *reserved) {
                     "aotsample_http_get",
                     "(Ljava/lang/String;Lcom/example/androidnativeaotexample/NativeAot$HttpCallback;)V",
                     (void *) http_get_jni
+            },
+            {
+                    "aotsample_now",
+                    "()Ljava/lang/String;",
+                    (void *) now_jni
+            },
+            {
+                    "aotsample_today",
+                    "()Ljava/lang/String;",
+                    (void *) today_jni
+            },
+            {
+                    "aotsample_culture",
+                    "()Ljava/lang/String;",
+                    (void *) culture_jni
             },
     };
     if ((*env)->RegisterNatives(env, cls, methods, sizeof(methods) / sizeof(methods[0])) < 0)

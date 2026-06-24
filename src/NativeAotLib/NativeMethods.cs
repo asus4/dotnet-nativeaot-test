@@ -63,4 +63,15 @@ public static class NativeMethods
         var cb = (delegate* unmanaged[Cdecl]<IntPtr, void>)callback;
         cb(result);
     }
+
+    // Globalization probes. Each returns a newly allocated ANSI C string that
+    // the caller must free()
+    [UnmanagedCallersOnly(EntryPoint = "aotsample_now")]
+    public static IntPtr Now() => Marshal.StringToHGlobalAnsi(CoreLib.NowStringCore());
+
+    [UnmanagedCallersOnly(EntryPoint = "aotsample_today")]
+    public static IntPtr Today() => Marshal.StringToHGlobalAnsi(CoreLib.TodayStringCore());
+
+    [UnmanagedCallersOnly(EntryPoint = "aotsample_culture")]
+    public static IntPtr Culture() => Marshal.StringToHGlobalAnsi(CoreLib.CultureStringCore());
 }

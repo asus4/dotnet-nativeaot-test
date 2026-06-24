@@ -19,40 +19,55 @@ struct ContentView: View {
                     .font(.title)
                     .padding(.top)
 
-                VStack(spacing: 16) {
-                    Button("Random Add") {
-                        let a = Int32.random(in: 0...100)
-                        let b = Int32.random(in: 0...100)
-                        append("\(a) + \(b) = \(NativeAot.add(a, b))")
-                    }
+                ScrollView {
+                    VStack(spacing: 16) {
+                        Button("Random Add") {
+                            let a = Int32.random(in: 0...100)
+                            let b = Int32.random(in: 0...100)
+                            append("\(a) + \(b) = \(NativeAot.add(a, b))")
+                        }
 
-                    Button("Write Line") {
-                        NativeAot.writeLine("Hello from Swift!")
-                        append("writeLine: Hello from Swift!")
-                    }
+                        Button("Write Line") {
+                            NativeAot.writeLine("Hello from Swift!")
+                            append("writeLine: Hello from Swift!")
+                        }
 
-                    Button("Sum String") {
-                        if let result = NativeAot.sumString("Hello, ", "World!") {
-                            append(result)
+                        Button("Sum String") {
+                            if let result = NativeAot.sumString("Hello, ", "World!") {
+                                append(result)
+                            }
+                        }
+
+                        Button("Fibonacci") {
+                            let n = Int32.random(in: 1...20)
+                            append("fib(\(n)) = \(NativeAot.fibonacci(n))")
+                        }
+
+                        Button("HTTP GET") {
+                            isHttpLoading = true
+                            append("Loading…")
+                            NativeAot.httpGet("https://example.com") { result in
+                                append(String(result.prefix(200)))
+                                isHttpLoading = false
+                            }
+                        }
+                        .disabled(isHttpLoading)
+
+                        Button("Clock Now") {
+                            if let result = NativeAot.now() { append(result) }
+                        }
+
+                        Button("Calendar Today") {
+                            if let result = NativeAot.today() { append("today: \(result)") }
+                        }
+
+                        Button("Culture") {
+                            if let result = NativeAot.culture() { append(result) }
                         }
                     }
-
-                    Button("Fibonacci") {
-                        let n = Int32.random(in: 1...20)
-                        append("fib(\(n)) = \(NativeAot.fibonacci(n))")
-                    }
-
-                    Button("HTTP GET") {
-                        isHttpLoading = true
-                        append("Loading…")
-                        NativeAot.httpGet("https://example.com") { result in
-                            append(String(result.prefix(200)))
-                            isHttpLoading = false
-                        }
-                    }
-                    .disabled(isHttpLoading)
+                    .padding()
+                    .frame(maxWidth: .infinity)
                 }
-                .padding()
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
 
                 ScrollViewReader { proxy in

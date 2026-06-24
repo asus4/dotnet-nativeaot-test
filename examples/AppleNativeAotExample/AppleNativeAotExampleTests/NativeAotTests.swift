@@ -27,6 +27,16 @@ struct NativeAotTests {
         #expect(NativeAot.fibonacci(0) == 0)
     }
 
+    @Test func globalizationProbes() {
+        // DateTime.Now / GregorianCalendar work without ICU.
+        #expect(NativeAot.now()?.contains("local=") == true)
+        #expect(NativeAot.today()?.isEmpty == false)
+        // Invariant mode: empty current culture, ja-JP creation blocked.
+        let culture = NativeAot.culture()
+        #expect(culture?.contains("current=''") == true)
+        #expect(culture?.contains("createJaJP=CultureNotFoundException") == true)
+    }
+
     @Test func httpGet() async {
         let result = await withCheckedContinuation { continuation in
             NativeAot.httpGet("https://example.com") { continuation.resume(returning: $0) }

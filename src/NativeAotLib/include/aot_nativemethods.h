@@ -13,4 +13,9 @@ extern char* aotsample_sumstring(const char* pStr1, const char* pStr2);
 typedef void (*aotsample_http_callback)(const char* result);
 extern void aotsample_http_get(const char* url, aotsample_http_callback callback);
 
+// Globalization probes. Each returns a malloc'd C string the caller must free().
+extern char* aotsample_now(void);
+extern char* aotsample_today(void);
+extern char* aotsample_culture(void);
+
 #endif // AOT_NATIVE_METHODS_H

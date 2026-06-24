@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Runtime.InteropServices;
 
 namespace NativeAotLib;
@@ -62,4 +63,33 @@ static partial class CoreLib
         var body = await response.Content.ReadAsStringAsync();
         return $"{(int)response.StatusCode} {response.ReasonPhrase}\n{body}";
     }
+
+    #region Globalization
+    internal static string NowStringCore() => $"local={DateTime.Now:O} utc={DateTime.UtcNow:O}";
+
+    // The (proleptic) Gregorian calendar is built in and needs no ICU data.
+    internal static string TodayStringCore()
+    {
+        var cal = new GregorianCalendar();
+        var today = DateTime.Today;
+        return $"{cal.GetYear(today):D4}-{cal.GetMonth(today):D2}-{cal.GetDayOfMonth(today):D2}";
+    }
+
+    // Will throw CultureNotFoundException under invariant mode 
+    internal static string CultureStringCore()
+    {
+        var current = CultureInfo.CurrentCulture.Name;
+        string createJaJp;
+        try
+        {
+            var ja = new CultureInfo("ja-JP");
+            createJaJp = $"Ok({ja.Name})";
+        }
+        catch (Exception e)
+        {
+            createJaJp = e.GetType().Name;
+        }
+        return $"current='{current}' createJaJP={createJaJp}";
+    }
+    #endregion // Globalization
 }

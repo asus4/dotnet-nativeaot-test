@@ -42,6 +42,7 @@ private fun NativeAotView() {
   var log by remember { mutableStateOf("") }
   var isHttpLoading by remember { mutableStateOf(false) }
   val scrollState = rememberScrollState()
+  val buttonsScrollState = rememberScrollState()
 
   fun append(line: String) {
     log = if (log.isEmpty()) line else log + "\n" + line
@@ -63,7 +64,11 @@ private fun NativeAotView() {
       )
 
       Column(
-          modifier = Modifier.weight(0.7f).fillMaxWidth().padding(horizontal = 16.dp),
+          modifier =
+              Modifier.weight(0.7f)
+                  .fillMaxWidth()
+                  .verticalScroll(buttonsScrollState)
+                  .padding(horizontal = 16.dp),
           verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterVertically),
           horizontalAlignment = Alignment.CenterHorizontally,
       ) {
@@ -104,6 +109,18 @@ private fun NativeAotView() {
                 isHttpLoading = false
               }
             },
+        )
+        ActionButton(
+            text = "Clock Now",
+            onClick = { NativeAot.now()?.let { append(it) } },
+        )
+        ActionButton(
+            text = "Calendar Today",
+            onClick = { NativeAot.today()?.let { append("today: $it") } },
+        )
+        ActionButton(
+            text = "Culture",
+            onClick = { NativeAot.culture()?.let { append(it) } },
         )
       }
 
