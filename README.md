@@ -6,12 +6,9 @@ The goal is to test a minimal workflow for C# -> native interop.
 ## Layout
 
 - `src/NativeAotLib/`: Shared .NET library
-- `tests/NativeAotLib.Tests/`: Pure C# (xUnit) tests for the library logic, no native build required
 - `src/NativeFib/`: Sample native library, which statically links the matching `libnativefib.a` into the AOT build.
-- `build/build_nativefib.sh`: Compiles the per-RID NativeFib static libs
-- `build/build_apple.sh`: Generates xcframework for macOS / iOS
-- `build/build_android.sh`: Generates .so files for Android
-- `build/build_openssl_android.sh`: Builds OpenSSL (`libssl.so`/`libcrypto.so`) for Android
+- `tests/NativeAotLib.Tests/`: Pure C# (xUnit) tests for the library logic, no native build required
+- `build/*`: Build scripts.
 - `examples/AppleNativeAotExample/`: An example Xcode project.
 - `examples/AndroidNativeAotExample/`: An example Android Studio project.
 
