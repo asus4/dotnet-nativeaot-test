@@ -4,21 +4,28 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
@@ -26,55 +33,89 @@ class MainActivity : ComponentActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     enableEdgeToEdge()
-    setContent {
-      NativeAotView(
-          addResult = NativeAot.add(15, 2),
-          onWriteLine = { NativeAot.writeLine("Hello from Kotlin!") },
-          onSumString = { NativeAot.sumString("Hello, ", "World!") ?: "" },
-          onFibonacci = { "fib(10) = ${NativeAot.fibonacci(10)}" },
-      )
-    }
+    setContent { NativeAotView() }
   }
 }
 
 @Composable
-private fun NativeAotView(
-    addResult: Int,
-    onWriteLine: () -> Unit,
-    onSumString: () -> String,
-    onFibonacci: () -> String,
-) {
-  var sumResult by remember { mutableStateOf("") }
-  var fibResult by remember { mutableStateOf("") }
-  var httpResult by remember { mutableStateOf("") }
+private fun NativeAotView() {
+  var log by remember { mutableStateOf("") }
   var isHttpLoading by remember { mutableStateOf(false) }
+  val scrollState = rememberScrollState()
+
+  fun append(line: String) {
+    log = if (log.isEmpty()) line else log + "\n" + line
+  }
+
+  LaunchedEffect(log) {
+    if (log.isNotEmpty()) {
+      scrollState.animateScrollTo(scrollState.maxValue)
+    }
+  }
 
   Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-    Box(modifier = Modifier.fillMaxSize().padding(innerPadding)) {
+    Column(modifier = Modifier.fillMaxSize().padding(innerPadding)) {
+      Text(
+          text = "C# NativeAOT Test",
+          style = MaterialTheme.typography.headlineMedium,
+          modifier = Modifier.fillMaxWidth().padding(top = 16.dp),
+          textAlign = TextAlign.Center,
+      )
+
       Column(
-          modifier = Modifier.align(Alignment.Center).padding(horizontal = 16.dp),
-          verticalArrangement = Arrangement.spacedBy(32.dp),
+          modifier = Modifier.weight(0.7f).fillMaxWidth().padding(horizontal = 16.dp),
+          verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterVertically),
           horizontalAlignment = Alignment.CenterHorizontally,
       ) {
-        Text(text = "15 + 2 = $addResult")
-        ActionButton(text = "Write Logcat from C#", onClick = onWriteLine)
-        ActionButton(text = "Sum Strings in C#", onClick = { sumResult = onSumString() })
-        Text(text = sumResult)
-        ActionButton(text = "Fibonacci in C#", onClick = { fibResult = onFibonacci() })
-        Text(text = fibResult)
         ActionButton(
-            text = "HTTP GET in C#",
+            text = "Random Add",
+            onClick = {
+              val a = (0..100).random()
+              val b = (0..100).random()
+              append("$a + $b = ${NativeAot.add(a, b)}")
+            },
+        )
+        ActionButton(
+            text = "Write Logcat",
+            onClick = {
+              NativeAot.writeLine("Hello from Kotlin!")
+              append("writeLine: Hello from Kotlin!")
+            },
+        )
+        ActionButton(
+            text = "Sum Strings",
+            onClick = { append(NativeAot.sumString("Hello, ", "World!") ?: "") },
+        )
+        ActionButton(
+            text = "Fibonacci",
+            onClick = {
+              val n = (1..20).random()
+              append("fib($n) = ${NativeAot.fibonacci(n)}")
+            },
+        )
+        ActionButton(
+            text = "HTTP GET",
             enabled = !isHttpLoading,
             onClick = {
               isHttpLoading = true
-              httpResult = "Loading…"
+              append("Loading…")
               NativeAot.httpGet("https://example.com") { result ->
-                httpResult = result.take(200)
+                append(result.take(200))
                 isHttpLoading = false
               }
             },
         )
-        Text(text = httpResult)
+      }
+
+      Column(
+          modifier =
+              Modifier.weight(0.3f)
+                  .fillMaxWidth()
+                  .border(1.dp, MaterialTheme.colorScheme.outlineVariant)
+                  .verticalScroll(scrollState)
+                  .padding(8.dp),
+      ) {
+        Text(text = log, fontFamily = FontFamily.Monospace)
       }
     }
   }
@@ -88,10 +129,5 @@ private fun ActionButton(text: String, enabled: Boolean = true, onClick: () -> U
 @Preview(showBackground = true)
 @Composable
 private fun NativeAotViewPreview() {
-  NativeAotView(
-      addResult = 17,
-      onWriteLine = {},
-      onSumString = { "Hello, World!" },
-      onFibonacci = { "fib(10) = 55" },
-  )
+  NativeAotView()
 }
