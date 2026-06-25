@@ -3,6 +3,9 @@
 A minimal example that builds an .NET code as a native library for iOS / macOS and Android. Use calls it from native Swift / Kotlin project.
 The goal is to test a minimal workflow for C# -> native interop.
 
+<img width="1400" height="890" alt="4335535e5be2-20260625" src="https://github.com/user-attachments/assets/9dfc2e1f-f762-4771-94a3-32a6ae236aaf" />
+
+
 ## Layout
 
 - `src/NativeAotLib/`: Shared .NET library
