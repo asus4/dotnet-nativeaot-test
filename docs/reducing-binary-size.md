@@ -25,10 +25,11 @@ biggest single win). The rest each move under 1%, not worth the behavior change:
   `UseNativeHttpHandler`: ~0 bytes here (AOT output is already stripped; these have no
   effect for this code).
 - `UseSystemResourceKeys=true`: *increased* size.
-- `OptimizationPreference=Size` (~2.5%) and `HttpActivityPropagationSupport=false`
-  (~0.8%): real but small, and behavioral — dropped.
+- `OptimizationPreference=Size` (~2.5%): dropped to keep Native AOT's performance.
+- `HttpActivityPropagationSupport=false` (~0.8%): dropped as it's was subtle.
 
 Notes:
+
 - `InvariantGlobalization=true` is safe for this library (integer add, ASCII string
   concat, ASCII-host HTTPS — no culture-sensitive formatting). It disables IDN; drop it
   if you need non-ASCII hostnames. See [globalization-support.md](globalization-support.md).
